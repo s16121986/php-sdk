@@ -1,0 +1,25 @@
+{
+  "name": "corelib/stdlib",
+  "description": "Stdlib",
+  "type": "library",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+	{
+	  "name": "Sergey Guryanov",
+	  "email": "s16121986@yandex.ru"
+	}
+  ],
+  "require": {
+	"php": ">=7.1.0"
+  },
+  "autoload": {
+	"psr-4": {
+	  "Corelib\\Stdlib\\": "src/"
+	}
+  },
+  "config": {
+	"sort-packages": true
+  }
+}
