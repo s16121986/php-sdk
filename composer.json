@@ -1,6 +1,6 @@
 {
   "name": "gsv/sdk",
-  "description": "Form",
+  "description": "Sdk",
   "type": "library",
   "keywords": [
 	"form"
@@ -19,7 +19,6 @@
 	"php": ">=7.3.0"
   },
   "autoload": {
-	"files": ["core/functions.php", "core/Enum.php"],
 	"psr-4": {
 	  "Gsdk\\": "src/"
 	}
