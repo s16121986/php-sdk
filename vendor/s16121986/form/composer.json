@@ -1,0 +1,30 @@
+{
+  "name": "gsdk/form",
+  "description": "Form",
+  "type": "library",
+  "keywords": [
+	"form"
+  ],
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "version": "1.0.0",
+  "authors": [
+	{
+	  "name": "Sergey Guryanov",
+	  "email": "s16121986@yandex.ru"
+	}
+  ],
+  "require": {
+	"php": ">=7.1.0",
+	"php-sdk/core": ">=1.0"
+  },
+  "autoload": {
+	"psr-4": {
+	  "Gsdk\\Form\\": "src/"
+	}
+  },
+  "config": {
+	"sort-packages": true
+  }
+}
