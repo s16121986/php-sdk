@@ -128,10 +128,6 @@ function __initDateTimeArgument($date) {
 	return DateTime::factory($date);
 }
 
-function now() {
-	return DateTime::now();
-}
-
 function CurrentDate() {
 	return __initDateTimeArgument(null);
 }
