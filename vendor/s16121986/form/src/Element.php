@@ -1,8 +1,8 @@
 <?php
 
-namespace Corelib\Form;
+namespace Gsdk\Form;
 
-use Corelib\Form\Element\Util\Attributes;
+use Gsdk\Form\Element\Util\Attributes;
 
 abstract class Element {
 

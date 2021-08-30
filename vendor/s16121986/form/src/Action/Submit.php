@@ -1,8 +1,8 @@
 <?php
 
-namespace Corelib\Form\Action;
+namespace Gsdk\Form\Action;
 
-use Corelib\Form\Form;
+use Gsdk\Form\Form;
 
 class Submit {
 

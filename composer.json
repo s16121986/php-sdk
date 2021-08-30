@@ -1,7 +1,10 @@
 {
-  "name": "gsdk/stdlib",
-  "description": "Stdlib",
+  "name": "gsdk/lib",
+  "description": "Form",
   "type": "library",
+  "keywords": [
+	"form"
+  ],
   "license": "MIT",
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -12,12 +15,7 @@
 	}
   ],
   "require": {
-	"php": ">=7.1.0"
-  },
-  "autoload": {
-	"psr-4": {
-	  "Gsdk\\Stdlib\\": "src/"
-	}
+	"php": ">=7.3.0"
   },
   "config": {
 	"sort-packages": true

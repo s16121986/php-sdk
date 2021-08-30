@@ -1,8 +1,8 @@
 <?php
 
-namespace Corelib\Form;
+namespace Gsdk\Form;
 
-use Corelib\Form\Fieldset as AbstractFieldset;
+use Gsdk\Form\Fieldset as AbstractFieldset;
 
 //use Api;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Form;
+namespace Gsdk\Form;
 
 class Fieldset {
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Corelib\Form\Element;
+namespace Gsdk\Form\Element;
 
-use Corelib\Stdlib\Format;
-use Corelib\Stdlib\DateTime;
+use Gsdk\Stdlib\Format;
+use Gsdk\Stdlib\DateTime;
 
 class Daterange extends Date {
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Stdlib;
+namespace Gsdk\Stdlib;
 
 use DateTime as BaseDateTime;
 use DateTimeZone as BaseDateTimeZone;
-use Stdlib\DateTime\Format;
+use Gsdk\Stdlib\DateTime\Format;
 use Exception;
 
 class DateTime extends BaseDateTime {

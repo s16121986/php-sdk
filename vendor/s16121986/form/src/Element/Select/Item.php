@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Form\Element\Select;
+namespace Gsdk\Form\Element\Select;
 
 class Item {
 

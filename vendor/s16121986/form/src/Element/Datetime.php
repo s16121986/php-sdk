@@ -1,8 +1,8 @@
 <?php
 
-namespace Corelib\Form\Element;
+namespace Gsdk\Form\Element;
 
-use Corelib\Stdlib\Format;
+use Gsdk\Stdlib\Format;
 
 class Datetime extends Text {
 

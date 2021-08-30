@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Form\Element\Util;
+namespace Gsdk\Form\Element\Util;
 
 class Attributes {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Form\Element;
+namespace Gsdk\Form\Element;
 
 class Select extends Xhtml {
 

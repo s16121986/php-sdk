@@ -1,9 +1,9 @@
 <?php
 
-namespace Corelib\Form\Element;
+namespace Gsdk\Form\Element;
 
-use Corelib\Form\Fieldset as AbstractFieldset;
-use Corelib\Form\Element;
+use Gsdk\Form\Fieldset as AbstractFieldset;
+use Gsdk\Form\Element;
 
 class Fieldset extends AbstractFieldset {
 

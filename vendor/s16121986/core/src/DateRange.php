@@ -1,5 +1,5 @@
 <?php
-namespace Stdlib;
+namespace Gsdk\Stdlib;
 
 use Dater;
 
