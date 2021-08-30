@@ -19,6 +19,7 @@
 	"php": ">=7.3.0"
   },
   "autoload": {
+	"files": ["src/core/functions.php", "src/core/Enum.php"],
 	"psr-4": {
 	  "Gsdk\\": "src/"
 	}
