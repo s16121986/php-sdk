@@ -1,5 +1,5 @@
 {
-  "name": "gsdk/lib",
+  "name": "gsv/sdk",
   "description": "Form",
   "type": "library",
   "keywords": [
@@ -17,6 +17,11 @@
   ],
   "require": {
 	"php": ">=7.3.0"
+  },
+  "autoload": {
+	"psr-4": {
+	  "Gsdk\\": "src/"
+	}
   },
   "config": {
 	"sort-packages": true
