@@ -128,7 +128,7 @@ class Form extends AbstractFieldset {
 	}
 
 	public function doAction($action, $options = []) {
-		$cls = 'Form\\Action\\' . ucfirst($action);
+		$cls = __NAMESPACE__ . '\\Action\\' . ucfirst($action);
 		$action = new $cls($this, $options);
 		if ($action->submit())
 			return true;
