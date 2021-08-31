@@ -101,7 +101,7 @@ class Form extends AbstractFieldset {
 		$s = '<div class="form-errors">';
 		//$s .= '<div class="label"><span>!</span> Ошибки:</div>';
 		$s .= '<ul>';
-		foreach ($this->_errors as $v) {
+		foreach ($this->errors as $v) {
 			$s .= '<li>' . $v . '</li>';
 		}
 		$s .= '</ul>';
