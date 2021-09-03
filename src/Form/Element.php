@@ -207,7 +207,7 @@ abstract class Element {
 
 	public function getLabel() {
 		if (null === $this->label) {
-			$this->label = new Label(array_merge($this->options, ['text' => $this->label]));
+			$this->label = new Label(array_merge($this->options, ['text' => $this->getOption('label')]));
 			$this->label->setElement($this);
 		}
 
