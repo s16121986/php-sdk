@@ -10,7 +10,8 @@ abstract class Element {
 		'required' => false,
 		'disabled' => false,
 		'readable' => true,
-		'render' => true
+		'render' => true,
+		'requiredText' => ''
 	];
 	protected $options = [];
 	protected $rendered = false;
@@ -224,7 +225,7 @@ abstract class Element {
 			return $this->error;
 
 		if (($this->required && !$this->disabled && $this->isEmpty()))
-			return lang('form_element_error');
+			return $this->requiredText;
 
 		return null;
 	}
