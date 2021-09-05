@@ -1,6 +1,6 @@
 <?php
 
-use Gsdk\Stdlib\DateTime;
+use Gsdk\DateTime;
 
 function lang() {
 	return call_user_func_array(['Translation', 'translate'], func_get_args());
