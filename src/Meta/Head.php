@@ -169,7 +169,10 @@ class Head {
 	}
 
 	public function __toString() {
-		$html = '';
+		$html = '<head>' . "\n";
+
+		$html .= '<title>' . $this->title . '</title>' . "\n";
+
 		foreach ($this->meta as $meta) {
 			$html .= $meta->getHtml() . "\n";
 		}
@@ -182,6 +185,8 @@ class Head {
 
 		if ($this->baseHref)
 			$html .= $this->baseHref->getHtml() . "\n";
+
+		$html .= '</head>';
 
 		return $html;
 	}
