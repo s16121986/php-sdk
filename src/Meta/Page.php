@@ -18,12 +18,17 @@ class Page {
 		switch ($name) {
 			case 'h1':
 				return $this->H1;
+			case 'title':
+			case 'keywords':
+			case 'description':
+				return $this->getHead()->$name;
 		}
+
 		if (isset($this->$name))
 			return $this->$name;
-		if (isset($this->data[$name])) {
+		else if (isset($this->data[$name]))
 			return $this->data[$name];
-		}
+
 		return null;
 		//return $this->getHead()->getMetaContent($name);
 	}
