@@ -1,11 +1,12 @@
 <?php
-namespace Gsdk\Stdlib;
+
+namespace Gsdk;
 
 use DateTimeZone as Base;
 
-class DateTimezone extends Base{
-	
-	private static $timezones = array();
+class DateTimezone extends Base {
+
+	private static $timezones = [];
 
 	public static function setServer($timezone, $setSystemGlobal = true) {
 		if ($setSystemGlobal) {
@@ -25,12 +26,13 @@ class DateTimezone extends Base{
 	public static function getClient() {
 		return self::get('client');
 	}
-	
+
 	public static function set($name, $timezone) {
 		self::$timezones[$name] = new self($timezone);
 	}
-	
+
 	public static function get($timezone) {
 		return isset(self::$timezones[$timezone]) ? self::$timezones[$timezone] : self::$timezones['server'];
 	}
+
 }

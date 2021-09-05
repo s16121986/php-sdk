@@ -1,6 +1,8 @@
 <?php
 
-use Gsdk\Stdlib\DateTime;
+namespace Gsdk;
+
+use Gsdk\DateTime;
 
 abstract class Format {
 

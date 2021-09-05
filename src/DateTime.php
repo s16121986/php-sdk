@@ -1,10 +1,10 @@
 <?php
 
-namespace Gsdk\Stdlib;
+namespace Gsdk;
 
 use DateTime as BaseDateTime;
 use DateTimeZone as BaseDateTimeZone;
-use Gsdk\Stdlib\DateTime\Format;
+use Gsdk\DateTime\Format;
 use Exception;
 
 class DateTime extends BaseDateTime {
@@ -24,9 +24,9 @@ class DateTime extends BaseDateTime {
 		if ($date instanceof self) {
 			$factoryDate->setTimezone($date->getTimezone());
 			$factoryDate->setTimestamp($date->getTimestamp());
-		} elseif (is_int($date)) {
+		} else if (is_int($date)) {
 			$factoryDate->setTimestamp($date);
-		} elseif (is_string($date)) {
+		} else if (is_string($date)) {
 			//$dt = new BaseDateTime($date, $timezone);
 			//$dt = self::createFromFormat('Y-m-d', $date);
 			$factoryDate->setTimestamp(strtotime($date));
@@ -144,31 +144,31 @@ class DateTime extends BaseDateTime {
 	}
 
 	public function getYear() {
-		return (int) $this->format('Y');
+		return (int)$this->format('Y');
 	}
 
 	public function getMonth() {
-		return (int) $this->format('n');
+		return (int)$this->format('n');
 	}
 
 	public function getDay() {
-		return (int) $this->format('j');
+		return (int)$this->format('j');
 	}
 
 	public function getWeekDay() {
-		return (int) $this->format('N');
+		return (int)$this->format('N');
 	}
 
 	public function getHour() {
-		return (int) $this->format('H');
+		return (int)$this->format('H');
 	}
 
 	public function getMinute() {
-		return (int) $this->format('i');
+		return (int)$this->format('i');
 	}
 
 	public function getSecond() {
-		return (int) $this->format('s');
+		return (int)$this->format('s');
 	}
 
 }
