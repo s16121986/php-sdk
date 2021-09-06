@@ -56,6 +56,7 @@ class Attributes {
 			return null;
 
 		switch ($name) {
+			case 'autofocus':
 			case 'checked':
 			case 'disabled':
 			case 'readonly':

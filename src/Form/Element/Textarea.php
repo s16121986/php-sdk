@@ -8,7 +8,7 @@ class Textarea extends Xhtml {
 		'stripTags' => true
 	];
 
-	protected $attributes = ['placeholder', 'maxlength'];
+	protected $attributes = ['placeholder', 'maxlength', 'required', 'autofocus', 'readonly'];
 
 	protected function prepareValue($value) {
 		if (is_scalar($value))
