@@ -91,11 +91,10 @@ abstract class Format {
 		$format = self::getDefault($formatString);
 		if (!$format)
 			return $value;
-
-		if (is_callable($format))
+		else if (is_callable($format))
 			return $format($value);
-
-		return $value;
+		else
+			return $value;
 	}
 
 	public static function setDefaults(array $formats) {
@@ -109,28 +108,28 @@ abstract class Format {
 	}
 
 	public static function getDefault($format, $default = null) {
-		if (is_string($format) && isset(self::$default[$format])) {
+		if (is_string($format) && isset(self::$default[$format]))
 			return self::$default[$format];
-		} else if (null === $format) {
+		else if (null === $format)
 			return $default;
-		}
-		return $format;
+		else
+			return $format;
 	}
 
-	public static function formatString($string, $format = null): string {
-		return (string)$string;
-	}
-
-	public static function formatDate($date, $format = null): string {
+	public static function date($date, $format = null): string {
 		return (new DateTime($date))->format(self::getDefault($format, self::DATE_FORMAT));
 	}
 
-	public static function formatTime($time, $format = self::TIME_FORMAT): string {
+	public static function time($time, $format = self::TIME_FORMAT): string {
 		return (new DateTime($time))->format(self::getDefault($format, self::TIME_FORMAT));
 	}
 
-	public static function formatNumber($number, $format = null) {
-		$format = self::parseFormat(self::getDefault($format), [
+	public static function datetime($date, $format = null): string {
+		return (new DateTime($date))->format(self::getDefault($format, self::DATETIME_FORMAT));
+	}
+
+	public static function number($number, $format = null) {
+		$format = self::parseFormat(self::getDefault($format, self::NUMBER_FORMAT), [
 			self::ND => 8,
 			self::NFD => 0,
 			self::NDS => ',',
@@ -152,7 +151,7 @@ abstract class Format {
 		return $v;
 	}
 
-	public static function formatPrice($price, $format = null) {
+	public static function price($price, $format = null) {
 		$format = self::parseFormat(self::getDefault($format, self::PRICE_FORMAT), [
 			self::ND => 8,
 			self::NFD => 2,
@@ -161,42 +160,14 @@ abstract class Format {
 			self::NZ => '0',
 			self::NLZ => false
 		]);
-		return self::formatNumber($price, $format);
+		return self::number($price, $format);
 	}
 
-	public static function formatHours($minutes, $format = 'H:i'): string {
-		$nn = ($minutes < 0);
-		if ($nn)
-			$minutes = -$minutes;
-
-		$h = floor($minutes / 60);
-		$m = $minutes - ($h * 60);
-		$s = 0;
-		$formatTemp = $format;
-		if ($format == 'label') {
-			$formatTemp = '';
-			if ($h)
-				$formatTemp .= $h . ' ' . lang('hours&' . numberLabelPrefix($h));
-			if ($m)
-				$formatTemp .= ' ' . $m . ' ' . lang('minuts&' . numberLabelPrefix($m));
-		} else {
-			$h = str_pad($h, 2, '0', STR_PAD_LEFT);
-			$m = str_pad($m, 2, '0', STR_PAD_LEFT);
-			$s = str_pad($s, 2, '0', STR_PAD_LEFT);
-			$formatTemp = str_replace(['H', 'i', 's'], [$h, $m, $s], $formatTemp);
-		}
-		return ($nn ? '-' : '') . $formatTemp;
-	}
-
-	public static function formatPhone($phone) {
+	public static function phone($phone) {
 		return self::callFormat('phone', $phone);
-		/*if (preg_match('/^\d{10}$/', $phone))
-			return '8 (' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 2) . '-' . substr($phone, 8, 2);
-
-		return $phone;*/
 	}
 
-	public static function formatBoolean($value, $format) {
+	public static function boolean($value, $format) {
 		$format = self::parseFormat($format, [
 			self::BT => lang('True'),
 			self::BF => lang('False')
@@ -204,7 +175,11 @@ abstract class Format {
 		return ($value ? $format[self::BT] : $format[self::BF]);
 	}
 
-	public static function formatText($value, $format) {
+	public static function string($string, $format = null): string {
+		return (string)$string;
+	}
+
+	public static function text($value, $format) {
 		$format = self::parseFormat($format, [
 			self::TL => 255,
 			self::TE => '',
@@ -212,7 +187,7 @@ abstract class Format {
 		]);
 	}
 
-	public static function formatFileSize($size, $format = null) {
+	public static function fileSize($size, $format = null) {
 		$format = self::parseFormat($format, [
 			self::FU => '',
 			self::FFD => 1,
@@ -234,13 +209,13 @@ abstract class Format {
 				$i--;
 			}
 			$size = $size / pow(1024, $i);
-			return self::formatNumber($size, $numberFormat) . ' ' . $units[$i];
+			return self::number($size, $numberFormat) . ' ' . $units[$i];
 		} else {
-			return self::formatNumber($size, $numberFormat);
+			return self::number($size, $numberFormat);
 		}
 	}
 
-	public static function formatNumberUnits($number, $format = null) {
+	public static function numberUnits($number, $format = null) {
 		$format = self::parseFormat($format, [
 			self::NUU => '',
 			self::NUFD => 1,
@@ -262,27 +237,31 @@ abstract class Format {
 				$i--;
 			}
 			$number = $number / pow(1000, $i);
-			return self::formatNumber($number, $numberFormat) . ' ' . $units[$i];
+			return self::number($number, $numberFormat) . ' ' . $units[$i];
 		} else {
-			return self::formatNumber($number, $numberFormat);
+			return self::number($number, $numberFormat);
 		}
+	}
+
+	public static function params($params, array $data = null) {
+		return new Format\Params($params, $data);
 	}
 
 	public static function format($value, $format) {
 		$type = gettype($value);
 		switch ($type) {
 			case 'integer':
-				return self::formatNumber($value, $format);
+				return self::number($value, $format);
 			case 'float':
 			case 'double':
-				return self::formatNumber($value, $format);
+				return self::number($value, $format);
 			case 'boolean':
-				return self::formatBoolean($value, $format);
+				return self::boolean($value, $format);
 			//case 'string':
-			//	return self::formatText($value, $format);
+			//	return self::text($value, $format);
 			case 'object':
 				if ($value instanceof \DateTime)
-					return self::formatDate($value, $format);
+					return self::date($value, $format);
 		}
 		return $value;
 	}
