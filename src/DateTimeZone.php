@@ -4,41 +4,34 @@ namespace Gsdk;
 
 use DateTimeZone as Base;
 
+use Exception;
+
 class DateTimeZone extends Base {
 
-	private static array $timezones = [];
+	private array $formats = [
+		'date' => 'Y-m-d',
+		'time' => 'Y-m-d H:i:s',
+		'datetime' => 'Y-m-d H:i:s'
+	];
 
-	public static function init($serverTimezone = null, $clientTimezone = null) {
-		self::setServer($serverTimezone ?: date_default_timezone_get());
-		if ($clientTimezone)
-			self::setClient($clientTimezone);
+	public static function factory($timezone): DateTimeZone {
+		if ($timezone instanceof DateTimeZone)
+			return $timezone;
+		else if ($timezone instanceof Base) {
+			return new self($timezone->getName());
+		} else if (is_string($timezone))
+			return new self($timezone);
+		else
+			throw new Exception('Timezone factory failed');
 	}
 
-	public static function setServer($timezone, $setSystemGlobal = true) {
-		if ($setSystemGlobal)
-			date_default_timezone_set($timezone);
-
-		self::set('server', $timezone);
+	public function setFormats($formats): DateTimeZone {
+		$this->formats = $formats;
+		return $this;
 	}
 
-	public static function getServer() {
-		return self::$timezones['server'];
-	}
-
-	public static function setClient($timezone) {
-		self::set('client', $timezone);
-	}
-
-	public static function getClient() {
-		return self::get('client');
-	}
-
-	public static function set($name, $timezone) {
-		self::$timezones[$name] = new self($timezone);
-	}
-
-	public static function get($timezone) {
-		return isset(self::$timezones[$timezone]) ? self::$timezones[$timezone] : self::$timezones['server'];
+	public function getFormat($alias) {
+		return $this->formats[$alias] ?? null;
 	}
 
 }

@@ -4,63 +4,85 @@ namespace Gsdk;
 
 use DateTime as BaseDateTime;
 use DateTimeZone as BaseDateTimeZone;
-use Gsdk\DateTime\Format;
+use Exception;
 
 class DateTime extends BaseDateTime {
 
-	public static function factory($date, $timezone = null): DateTime {
-		$factoryDate = new self('now', DateTimeZone::getServer());
+	private static ?DateTimeZone $defaultTimeZone;
+	private static ?DateTimeZone $serverTimeZone;
 
-		if ($date instanceof self) {
-			$factoryDate->setTimezone($date->getTimezone());
-			$factoryDate->setTimestamp($date->getTimestamp());
-		} else if (is_int($date)) {
-			$factoryDate->setTimestamp($date);
-		} else if (is_string($date)) {
-			//$dt = new BaseDateTime($date, $timezone);
-			//$dt = self::createFromFormat('Y-m-d', $date);
-			$factoryDate->setTimestamp(strtotime($date));
-		}
-
-		$factoryDate->setTimezone($timezone);
-
-		return $factoryDate;
+	public static function setDefaultTimeZone($timezone) {
+		self::$defaultTimeZone = DateTimeZone::factory($timezone);
 	}
 
-	public static function now(): DateTime {
-		return self::factory(null);
+	public static function getDefaultTimeZone(): ?DateTimeZone {
+		return self::$defaultTimeZone;
 	}
 
-	public function __construct($time = 'now', BaseDateTimeZone $timezone = null) {
-		parent::__construct($time);
+	public static function setServerTimeZone($timezone) {
+		self::$serverTimeZone = DateTimeZone::factory($timezone);
+	}
+
+	public static function getServerTimeZone(): ?DateTimeZone {
+		return self::$serverTimeZone;
+	}
+
+	public static function now($timezone = null): DateTime {
+		return new self('now', $timezone);
+	}
+
+	public function __construct($time = 'now', $timezone = null) {
+		$this->setTimezone('server');
+
+		if ($time instanceof self) {
+			$this->setTimezone($time->getTimezone());
+			$this->setTimestamp($time->getTimestamp());
+		} else if (is_int($time))
+			$this->setTimestamp($time);
+		else if (is_string($time))
+			$this->setTimestamp(strtotime($time));
+		else
+			parent::__construct($time);
+
 		$this->setTimezone($timezone);
 	}
 
 	public function setTimezone($timezone): DateTime {
 		if (null === $timezone)
-			$timezone = DateTimeZone::getClient();
-		if (is_string($timezone) && DateTimeZone::get($timezone))
-			$timezone = DateTimeZone::get($timezone);
+			return parent::setTimezone(self::$defaultTimeZone);
+		if ($timezone instanceof BaseDateTimeZone)
+			return parent::setTimezone($timezone);
+		else if (!is_string($timezone))
+			throw new Exception('Timezone format invalid');
 
-		if (!$timezone)
-			return $this;
-
-		return parent::setTimezone($timezone);
+		switch ($timezone) {
+			case 'client':
+			case 'default':
+				return $this->setTimezone(self::$defaultTimeZone);
+			case 'server':
+				return $this->setTimezone(self::$serverTimeZone);
+			default:
+				return parent::setTimezone($timezone);
+		}
 	}
 
-	public function format($format) {
-		return Format::format($this, $format);
+	public function format($format): string {
+		$timezone = $this->getTimezone();
+		if ($timezone instanceof DateTimeZone)
+			$format = $timezone->getFormat($format) ?? $format;
+
+		return parent::format($format);
 	}
 
-	public function formatTime() {
+	public function formatTime(): string {
 		return self::format('time');
 	}
 
-	public function formatDate() {
+	public function formatDate(): string {
 		return self::format('date');
 	}
 
-	public function formatDatetime() {
+	public function formatDatetime(): string {
 		return self::format('datetime');
 	}
 
