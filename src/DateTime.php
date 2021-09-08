@@ -9,7 +9,7 @@ use Gsdk\DateTime\Format;
 class DateTime extends BaseDateTime {
 
 	public static function factory($date, $timezone = null): DateTime {
-		$factoryDate = new self('now', DateTimezone::getServer());
+		$factoryDate = new self('now', DateTimeZone::getServer());
 
 		if ($date instanceof self) {
 			$factoryDate->setTimezone($date->getTimezone());

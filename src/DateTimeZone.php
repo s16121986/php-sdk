@@ -4,7 +4,7 @@ namespace Gsdk;
 
 use DateTimeZone as Base;
 
-class DateTimezone extends Base {
+class DateTimeZone extends Base {
 
 	private static array $timezones = [];
 

@@ -3,7 +3,7 @@
 namespace Gsdk\DateTime;
 
 use Gsdk\DateTime;
-use Gsdk\DateTimezone;
+use Gsdk\DateTimeZone;
 use Translation\DateInterval as TranslationDateInterval;
 use Translation\Calendar;
 
@@ -24,15 +24,15 @@ abstract class Format {
 	}
 
 	public static function serverDate($datetime = null) {
-		return DateTime::factory($datetime, DateTimezone::getServer())->format('server.date');
+		return DateTime::factory($datetime, DateTimeZone::getServer())->format('server.date');
 	}
 
 	public static function serverTime($datetime = null) {
-		return DateTime::factory($datetime, DateTimezone::getServer())->format('server.time');
+		return DateTime::factory($datetime, DateTimeZone::getServer())->format('server.time');
 	}
 
 	public static function serverDatetime($datetime = null) {
-		return DateTime::factory($datetime, DateTimezone::getServer())->format('server.datetime');
+		return DateTime::factory($datetime, DateTimeZone::getServer())->format('server.datetime');
 	}
 
 	public function format($format) {
