@@ -21,7 +21,7 @@ class DateTime extends BaseDateTime {
 	}
 
 	public static function now($timezone = null): DateTime {
-		return new self('now', $timezone);
+		return new DateTime('now', $timezone);
 	}
 
 	public static function setFormats($formats, $timezone = 'default') {
@@ -36,19 +36,25 @@ class DateTime extends BaseDateTime {
 	}
 
 	public function __construct($time = 'now', $timezone = null) {
-		$this->setTimezone('server');
-
-		if ($time instanceof self) {
+		if ($time instanceof BaseDateTime) {
+			parent::__construct();
 			$this->setTimezone($time->getTimezone());
 			$this->setTimestamp($time->getTimestamp());
-		} else if (is_int($time))
-			$this->setTimestamp($time);
-		else if (is_string($time))
-			$this->setTimestamp(strtotime($time));
-		else
-			parent::__construct($time);
+			$this->setTimezone($timezone);
+			return;
+		} else if (is_string($time))
+			$time = strtotime($time);
+		else if (!is_int($time))
+			throw new Exception('$time type is invalid');
 
+		parent::__construct();
+		$this->setTimezone('server');
+		$this->setTimestamp($time);
 		$this->setTimezone($timezone);
+	}
+
+	public function clone(): DateTime {
+		return new DateTime($this);
 	}
 
 	public function setTimezone($timezone): DateTime {
@@ -57,7 +63,7 @@ class DateTime extends BaseDateTime {
 		else if ($timezone instanceof DateTimeZone)
 			return parent::setTimezone($timezone);
 		else if (!is_string($timezone))
-			throw new Exception('$timezone type invalid');
+			throw new Exception('$timezone type is invalid');
 
 		switch ($timezone) {
 			case 'client':
