@@ -2,8 +2,6 @@
 
 namespace Gsdk;
 
-use Gsdk\DateTime;
-
 abstract class Format {
 
 	const S = ';';
@@ -124,17 +122,17 @@ abstract class Format {
 	}
 
 	public static function formatDate($date, $format = null) {
-		return DateTime::factory($date)->format(self::getDefault($format, self::DATE_FORMAT));
+		return (new DateTime($date))->format(self::getDefault($format, self::DATE_FORMAT));
 	}
 
 	public static function formatTime($time, $format = self::TIME_FORMAT) {
-		return DateTime::factory($date)->format(self::getDefault($format, self::TIME_FORMAT));
+		return (new DateTime($time))->format(self::getDefault($format, self::TIME_FORMAT));
 	}
 
 	public static function formatDatePeriod($dateFrom, $dateTo, $format = 'j F Y') {
 		$now = now();
-		$dateFrom = DateTime::factory($dateFrom);
-		$dateTo = DateTime::factory($dateTo);
+		$dateFrom = new DateTime($dateFrom);
+		$dateTo = new DateTime($dateTo);
 		if ($now->format('Y') == $dateTo->format('Y')) {
 			$format = trim(str_replace(['Y', 'y'], '', $format));
 		}
@@ -145,7 +143,7 @@ abstract class Format {
 				$format = trim(str_replace(['m', 'n'], '', $format));
 			}
 		}
-		return DateTime::factory($dateFrom)->format($format) . ' - ' . DateTime::factory($dateTo)->format($toFormat);
+		return (new DateTime($dateFrom))->format($format) . ' - ' . (new DateTime($dateTo))->format($toFormat);
 	}
 
 	public static function formatNumber($number, $format = null) {
