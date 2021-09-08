@@ -8,7 +8,11 @@ use Exception;
 
 class DateTime extends BaseDateTime {
 
-	private static array $formats = [];
+	private static array $formats = [
+		'date' => 'Y-m-d',
+		'time' => 'H:i:s',
+		'datetime' => 'Y-m-d H:i:s'
+	];
 	private static DateTimeZone $clientTimeZone;
 	private static DateTimeZone $serverTimeZone;
 
@@ -24,21 +28,17 @@ class DateTime extends BaseDateTime {
 		return new DateTime('now', $timezone);
 	}
 
-	public static function setFormats($formats, $timezone = 'default') {
-		self::$formats[$timezone] = $formats;
+	public static function setFormats($formats) {
+		self::$formats = $formats;
 	}
 
-	public static function getFormat($format, $timezone = 'default') {
-		if ($timezone === 'default')
-			return self::$formats[$timezone]['default'] ?? null;
-		else
-			return self::$formats[$timezone][$format] ?? self::$formats[$timezone]['default'] ?? null;
+	public static function getFormat($format) {
+		return self::$formats[$format] ?? null;
 	}
 
 	public function __construct($time = 'now', $timezone = null) {
 		if ($time instanceof BaseDateTime) {
-			parent::__construct();
-			$this->setTimezone($time->getTimezone());
+			parent::__construct('now', $time->getTimezone());
 			$this->setTimestamp($time->getTimestamp());
 			$this->setTimezone($timezone);
 			return;
@@ -47,14 +47,9 @@ class DateTime extends BaseDateTime {
 		else if (!is_int($time))
 			throw new Exception('$time type is invalid');
 
-		parent::__construct();
-		$this->setTimezone('server');
+		parent::__construct('now', self::$serverTimeZone);
 		$this->setTimestamp($time);
 		$this->setTimezone($timezone);
-	}
-
-	public function clone(): DateTime {
-		return new DateTime($this);
 	}
 
 	public function setTimezone($timezone): DateTime {
@@ -84,24 +79,32 @@ class DateTime extends BaseDateTime {
 		}
 	}
 
+	public function clone($timezone = null): DateTime {
+		return new DateTime($this, $timezone);
+	}
+
 	public function format($format): string {
-		$timezone = $this->getTimezone()->getName();
-
-		$format = self::getFormat($format, $timezone) ?? $format;
-
-		return parent::format($format);
+		return parent::format(self::getFormat($format) ?? $format);
 	}
 
-	public function formatTime(): string {
-		return self::format('time');
+	public function serverFormat($format): string {
+		$timezone = $this->getTimezone();
+		if ($timezone->getName() === self::$serverTimeZone->getName())
+			return parent::format($format);
+
+		return $this->clone('server')->format($format);
 	}
 
-	public function formatDate(): string {
-		return self::format('date');
+	public function serverDate(): string {
+		return $this->serverFormat('Y-m-d');
 	}
 
-	public function formatDatetime(): string {
-		return self::format('datetime');
+	public function serverTime(): string {
+		return $this->serverFormat('H:i:s');
+	}
+
+	public function serverDatetime(): string {
+		return $this->serverFormat('Y-m-d H:i:s');
 	}
 
 	public function setYear($year): DateTime {
