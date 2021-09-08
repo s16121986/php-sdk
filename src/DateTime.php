@@ -3,32 +3,44 @@
 namespace Gsdk;
 
 use DateTime as BaseDateTime;
-use DateTimeZone as BaseDateTimeZone;
+use DateTimeZone;
 use Exception;
 
 class DateTime extends BaseDateTime {
 
-	private static ?DateTimeZone $defaultTimeZone = null;
-	private static ?DateTimeZone $serverTimeZone = null;
+	private static array $formats = [];
+	private static string $clientTimeZone;
+	private static string $serverTimeZone;
 
-	public static function setDefaultTimeZone($timezone) {
-		self::$defaultTimeZone = DateTimeZone::factory($timezone);
+	public static function setClientTimeZone(string $timezone) {
+		self::$clientTimeZone = $timezone;
 	}
 
-	public static function getDefaultTimeZone(): ?DateTimeZone {
-		return self::$defaultTimeZone;
+	public static function getClientTimeZone(): string {
+		return self::$clientTimeZone;
 	}
 
-	public static function setServerTimeZone($timezone) {
-		self::$serverTimeZone = DateTimeZone::factory($timezone);
+	public static function setServerTimeZone(string $timezone) {
+		self::$serverTimeZone = $timezone;
 	}
 
-	public static function getServerTimeZone(): ?DateTimeZone {
+	public static function getServerTimeZone(): string {
 		return self::$serverTimeZone;
 	}
 
 	public static function now($timezone = null): DateTime {
 		return new self('now', $timezone);
+	}
+
+	public static function setFormats($formats, $timezone = 'default') {
+		self::$formats[$timezone] = $formats;
+	}
+
+	public static function getFormat($format, $timezone = 'default') {
+		if ($timezone === 'default')
+			return self::$formats[$timezone]['default'] ?? null;
+		else
+			return self::$formats[$timezone][$format] ?? self::$formats[$timezone]['default'] ?? null;
 	}
 
 	public function __construct($time = 'now', $timezone = null) {
@@ -49,8 +61,8 @@ class DateTime extends BaseDateTime {
 
 	public function setTimezone($timezone): DateTime {
 		if (null === $timezone)
-			return parent::setTimezone(self::$defaultTimeZone);
-		if ($timezone instanceof BaseDateTimeZone)
+			$timezone = 'client';
+		else if ($timezone instanceof DateTimeZone)
 			return parent::setTimezone($timezone);
 		else if (!is_string($timezone))
 			throw new Exception('Timezone format invalid');
@@ -58,18 +70,25 @@ class DateTime extends BaseDateTime {
 		switch ($timezone) {
 			case 'client':
 			case 'default':
-				return $this->setTimezone(self::$defaultTimeZone);
+				if (self::$clientTimeZone)
+					return $this->setTimezone(self::$clientTimeZone);
+				else if (self::$serverTimeZone)
+					return $this->setTimezone(self::$serverTimeZone);
+				else
+					throw new Exception('Client timezone not specified');
 			case 'server':
-				return $this->setTimezone(self::$serverTimeZone);
+				if (self::$serverTimeZone)
+					return $this->setTimezone(self::$serverTimeZone);
+				throw new Exception('Server timezone not specified');
 			default:
 				return parent::setTimezone($timezone);
 		}
 	}
 
 	public function format($format): string {
-		$timezone = $this->getTimezone();
-		if ($timezone instanceof DateTimeZone)
-			$format = $timezone->getFormat($format) ?? $format;
+		$timezone = $this->getTimezone()->getName();
+
+		$format = self::getFormat($format, $timezone) ?? $format;
 
 		return parent::format($format);
 	}
