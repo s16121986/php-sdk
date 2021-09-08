@@ -6,12 +6,18 @@ use DateTimeZone as Base;
 
 class DateTimezone extends Base {
 
-	private static $timezones = [];
+	private static array $timezones = [];
+
+	public static function init($serverTimezone = null, $clientTimezone = null) {
+		self::setServer($serverTimezone ?: date_default_timezone_get());
+		if ($clientTimezone)
+			self::setClient($clientTimezone);
+	}
 
 	public static function setServer($timezone, $setSystemGlobal = true) {
-		if ($setSystemGlobal) {
+		if ($setSystemGlobal)
 			date_default_timezone_set($timezone);
-		}
+
 		self::set('server', $timezone);
 	}
 

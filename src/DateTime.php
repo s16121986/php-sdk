@@ -5,20 +5,10 @@ namespace Gsdk;
 use DateTime as BaseDateTime;
 use DateTimeZone as BaseDateTimeZone;
 use Gsdk\DateTime\Format;
-use Exception;
 
 class DateTime extends BaseDateTime {
 
-	private static $formats = [];
-
-	public static function init($serverTimezone = null, $clientTimezone = null) {
-		DateTimezone::setServer($serverTimezone ?: date_default_timezone_get());
-		if ($clientTimezone)
-			DateTimezone::setClient($clientTimezone);
-		Format::init();
-	}
-
-	public static function factory($date, $timezone = null) {
+	public static function factory($date, $timezone = null): DateTime {
 		$factoryDate = new self('now', DateTimezone::getServer());
 
 		if ($date instanceof self) {
@@ -37,32 +27,8 @@ class DateTime extends BaseDateTime {
 		return $factoryDate;
 	}
 
-	public static function now() {
+	public static function now(): DateTime {
 		return self::factory(null);
-	}
-
-	public static function setFormat($alias, $format) {
-		//$regexp = '/' . str_replace(array('.', '?', '|'), array('\\.', '\\?', '\\|'), $alias) . '/';
-		//self::$formats[$alias] = [$regexp, $format];
-		self::$formats[] = [$alias, $format, '~' . count(self::$formats) . '~'];
-	}
-
-	public static function getFormat($format) {
-		if (isset(self::$formats[$format]))
-			return self::$formats[$format][1];
-		return $format;
-	}
-
-	public static function serverDate($datetime = null) {
-		return self::factory($datetime, DateTimezone::getServer())->format('server.date');
-	}
-
-	public static function serverTime($datetime = null) {
-		return self::factory($datetime, DateTimezone::getServer())->format('server.time');
-	}
-
-	public static function serverDatetime($datetime = null) {
-		return self::factory($datetime, DateTimezone::getServer())->format('server.datetime');
 	}
 
 	public function __construct($time = 'now', BaseDateTimeZone $timezone = null) {
@@ -70,26 +36,7 @@ class DateTime extends BaseDateTime {
 		$this->setTimezone($timezone);
 	}
 
-	public function format($format) {
-		foreach (self::$formats as $f) {
-			if (is_callable($f[1]))
-				$format = str_replace($f[0], $f[2], $format);
-			else
-				$format = str_replace($f[0], $f[1], $format);
-		}
-
-		$format = parent::format($format);
-
-		$datetime = $this;
-		$formats = self::$formats;
-		$format = preg_replace_callback('/~(\d+)~/', function ($matches) use ($datetime, $formats) {
-			return call_user_func($formats[$matches[1]][1], $datetime);
-		}, $format);
-
-		return $format;
-	}
-
-	public function setTimezone($timezone) {
+	public function setTimezone($timezone): DateTime {
 		if (null === $timezone)
 			$timezone = DateTimeZone::getClient();
 		if (is_string($timezone) && DateTimeZone::get($timezone))
@@ -101,73 +48,77 @@ class DateTime extends BaseDateTime {
 		return parent::setTimezone($timezone);
 	}
 
+	public function format($format) {
+		return Format::format($this, $format);
+	}
+
 	public function formatTime() {
-		return parent::format('time');
+		return self::format('time');
 	}
 
 	public function formatDate() {
-		return parent::format('date');
+		return self::format('date');
 	}
 
 	public function formatDatetime() {
-		return parent::format('datetime');
+		return self::format('datetime');
 	}
 
-	public function setYear($year) {
+	public function setYear($year): DateTime {
 		$this->setDate($year, $this->getMonth(), $this->getDay());
 		return $this;
 	}
 
-	public function setMonth($month) {
+	public function setMonth($month): DateTime {
 		$this->setDate($this->getYear(), $month, $this->getDay());
 		return $this;
 	}
 
-	public function setDay($day) {
+	public function setDay($day): DateTime {
 		$this->setDate($this->getYear(), $this->getMonth(), $day);
 		return $this;
 	}
 
-	public function setHours($hours) {
+	public function setHours($hours): DateTime {
 		$this->setTime($hours, $this->getMinute());
 		return $this;
 	}
 
-	public function setMinutes($minutes) {
+	public function setMinutes($minutes): DateTime {
 		$this->setTime($this->getHour(), $minutes);
 		return $this;
 	}
 
-	public function setSeconds($seconds) {
+	public function setSeconds($seconds): DateTime {
 		$this->setTime($this->getHour(), $this->getMinute(), $seconds);
 		return $this;
 	}
 
-	public function getYear() {
+	public function getYear(): int {
 		return (int)$this->format('Y');
 	}
 
-	public function getMonth() {
+	public function getMonth(): int {
 		return (int)$this->format('n');
 	}
 
-	public function getDay() {
+	public function getDay(): int {
 		return (int)$this->format('j');
 	}
 
-	public function getWeekDay() {
+	public function getWeekDay(): int {
 		return (int)$this->format('N');
 	}
 
-	public function getHour() {
+	public function getHour(): int {
 		return (int)$this->format('H');
 	}
 
-	public function getMinute() {
+	public function getMinute(): int {
 		return (int)$this->format('i');
 	}
 
-	public function getSecond() {
+	public function getSecond(): int {
 		return (int)$this->format('s');
 	}
 
