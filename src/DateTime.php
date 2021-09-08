@@ -9,23 +9,15 @@ use Exception;
 class DateTime extends BaseDateTime {
 
 	private static array $formats = [];
-	private static string $clientTimeZone;
-	private static string $serverTimeZone;
+	private static DateTimeZone $clientTimeZone;
+	private static DateTimeZone $serverTimeZone;
 
-	public static function setClientTimeZone(string $timezone) {
-		self::$clientTimeZone = $timezone;
+	public static function setClientTimeZone(string|DateTimeZone $timezone) {
+		self::$clientTimeZone = is_string($timezone) ? new DateTimeZone($timezone) : $timezone;
 	}
 
-	public static function getClientTimeZone(): string {
-		return self::$clientTimeZone;
-	}
-
-	public static function setServerTimeZone(string $timezone) {
-		self::$serverTimeZone = $timezone;
-	}
-
-	public static function getServerTimeZone(): string {
-		return self::$serverTimeZone;
+	public static function setServerTimeZone(string|DateTimeZone $timezone) {
+		self::$serverTimeZone = is_string($timezone) ? new DateTimeZone($timezone) : $timezone;
 	}
 
 	public static function now($timezone = null): DateTime {
@@ -65,23 +57,24 @@ class DateTime extends BaseDateTime {
 		else if ($timezone instanceof DateTimeZone)
 			return parent::setTimezone($timezone);
 		else if (!is_string($timezone))
-			throw new Exception('Timezone format invalid');
+			throw new Exception('$timezone type invalid');
 
 		switch ($timezone) {
 			case 'client':
 			case 'default':
 				if (self::$clientTimeZone)
-					return $this->setTimezone(self::$clientTimeZone);
+					return parent::setTimezone(self::$clientTimeZone);
 				else if (self::$serverTimeZone)
-					return $this->setTimezone(self::$serverTimeZone);
+					return parent::setTimezone(self::$serverTimeZone);
 				else
 					throw new Exception('Client timezone not specified');
 			case 'server':
 				if (self::$serverTimeZone)
-					return $this->setTimezone(self::$serverTimeZone);
+					return parent::setTimezone(self::$serverTimeZone);
 				throw new Exception('Server timezone not specified');
 			default:
-				return parent::setTimezone($timezone);
+				//throw new Exception('$timezone must be of type DateTimeZone');
+				return parent::setTimezone(new DateTimeZone($timezone));
 		}
 	}
 
