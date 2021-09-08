@@ -8,8 +8,8 @@ use Exception;
 
 class DateTime extends BaseDateTime {
 
-	private static ?DateTimeZone $defaultTimeZone;
-	private static ?DateTimeZone $serverTimeZone;
+	private static ?DateTimeZone $defaultTimeZone = null;
+	private static ?DateTimeZone $serverTimeZone = null;
 
 	public static function setDefaultTimeZone($timezone) {
 		self::$defaultTimeZone = DateTimeZone::factory($timezone);
