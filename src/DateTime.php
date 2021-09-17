@@ -37,7 +37,9 @@ class DateTime extends BaseDateTime {
 	}
 
 	public function __construct($time = 'now', $timezone = null) {
-		if ($time instanceof BaseDateTime) {
+		if (null === $time)
+			$time = strtotime('now');
+		else if ($time instanceof BaseDateTime) {
 			parent::__construct('now', $time->getTimezone());
 			$this->setTimestamp($time->getTimestamp());
 			$this->setTimezone($timezone);
