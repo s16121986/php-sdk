@@ -3,7 +3,10 @@
 use Gsdk\DateTime;
 
 function __initDateTimeArgument($date) {
-	return DateTime::factory($date);
+	if ($date instanceof DateTime)
+		return $date;
+	else
+		return new DateTime($date);
 }
 
 function CurrentDate() {
