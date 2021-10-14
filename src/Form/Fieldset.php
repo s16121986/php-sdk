@@ -199,13 +199,9 @@ class Fieldset {
 	}
 
 	public function isValid() {
-		if (!empty($this->_errors)) {
-			return false;
-		}
 		foreach ($this->elements as $element) {
-			if (!$element->isValid()) {
+			if (!$element->isValid())
 				return false;
-			}
 		}
 		return true;
 	}

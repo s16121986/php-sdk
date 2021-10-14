@@ -119,6 +119,13 @@ class Form extends AbstractFieldset {
 		return '';
 	}
 
+	public function isValid() {
+		if (!empty($this->errors))
+			return false;
+
+		return parent::isValid();
+	}
+
 	public function reset() {
 		foreach ($this->elements as $element) {
 			$element->reset();
