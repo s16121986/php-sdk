@@ -2,6 +2,7 @@
 
 namespace Gsdk\Navigation;
 
+use Illuminate\Database\Eloquent\Builder;
 use stdClass;
 
 class Paginator {
@@ -16,7 +17,7 @@ class Paginator {
 		'view' => 'layouts.paginator'
 	];
 
-	protected $current = 1;
+	protected $current;
 
 	protected $count = 0;
 
@@ -67,6 +68,9 @@ class Paginator {
 	}
 
 	public function getCurrentPage(): int {
+		if (null !== $this->current)
+			return $this->current;
+
 		$this->current = (int)$this->getQuery($this->queryParam);
 		if ($this->current > $this->getPageCount())
 			$this->current = $this->getPageCount();
@@ -145,6 +149,15 @@ class Paginator {
 		$pages->lastPageInRange = $lastPageInRange;
 
 		return $pages;
+	}
+
+	public function query(Builder $query): static {
+		$count = $query->count();
+		$this->setCount($count);
+		$query
+			->limit($this->step)
+			->offset($this->getStartIndex());
+		return $this;
 	}
 
 	public function render($view = null) {
