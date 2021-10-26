@@ -13,7 +13,7 @@ class Paginator {
 		'nextText' => '{{lang:Next}}',
 		'baseUrl' => null,
 		'queryParam' => 'p',
-		'view' => 'layout/paginator'
+		'view' => 'layouts.paginator'
 	];
 
 	protected $current = 1;
@@ -147,7 +147,7 @@ class Paginator {
 		return $pages;
 	}
 
-	public function view($view = null) {
+	public function render($view = null) {
 		$pages = $this->getPages();
 		if (!$pages)
 			return '';
