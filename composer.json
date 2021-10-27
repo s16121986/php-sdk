@@ -21,8 +21,7 @@
   "autoload": {
 	"files": [
 	  "functions/functions.php",
-	  "functions/date.php",
-	  "core/Enum.php"
+	  "functions/date.php"
 	],
 	"psr-4": {
 	  "Gsdk\\": "src/"
