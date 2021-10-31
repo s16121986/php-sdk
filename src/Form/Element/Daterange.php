@@ -29,7 +29,7 @@ class Daterange extends Date {
 			$a = [];
 			foreach ($this->getValue() as $date) {
 				if ($date)
-					$a[] = DateTime::factory($date)->format('date');
+					$a[] = (new DateTime($date))->format('date');
 			}
 			$d = implode(self::delimiter, $a);
 		}
