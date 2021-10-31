@@ -20,7 +20,7 @@ class Daterange extends Date {
 	}
 
 	public function isEmpty(): bool {
-		return empty($this->value) || !($this->value['valueFrom'] && $this->value['to']);
+		return empty($this->value) || !($this->value['valueFrom'] || $this->value['valueTo']);
 	}
 
 	public function getHtml(): string {
