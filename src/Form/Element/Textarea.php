@@ -22,7 +22,7 @@ class Textarea extends Xhtml {
 		return trim($value);
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		return '<textarea' . $this->attributes . '>' . $this->getValue() . '</textarea>';
 	}
 

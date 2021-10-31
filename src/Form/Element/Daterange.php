@@ -24,7 +24,7 @@ class Daterange extends Date {
 		return empty($this->value) || !($this->value['valueFrom'] && $this->value['to']);
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$d = '';
 		if ($this->getValue()) {
 			$a = [];
@@ -35,7 +35,9 @@ class Daterange extends Date {
 			$d = implode(self::delimiter, $a);
 		}
 
-		return '<input type="' . $this->inputType . '"' . $this->attrToString() . ' value="' . $d . '" />';
+		return '<input type="' . $this->inputType . '"'
+			. $this->attributes . ' value="' . $d . '" />'
+			. $this->attributes->getHtml();
 	}
 
 }

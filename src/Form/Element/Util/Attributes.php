@@ -17,7 +17,7 @@ class Attributes {
 		$this->attributes[] = $name;
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '';
 		foreach ($this->attributes as $k) {
 			$html .= self::getAttributeHtml($this->element, $k);

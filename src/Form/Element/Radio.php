@@ -74,7 +74,7 @@ class Radio extends Xhtml {
 		return ($this->value === $value);
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '<div class="field-radio-box">';//'<select' . $this->attrToString() . '>';
 		$i = 0;
 		foreach ($this->getItems() as $item) {

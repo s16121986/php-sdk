@@ -3,7 +3,7 @@ namespace Form\Element;
 
 class Image extends File{
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '<div id="' . $this->id . '_images" class="box">';
 		$value = $this->getValue();
 		if ($value) {

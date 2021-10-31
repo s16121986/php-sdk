@@ -261,7 +261,7 @@ class Select extends Xhtml {
 		return $name;
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '<select' . $this->attributes . '>';
 		$html .= $this->getOptionsHtml();
 		$html .= '</select>';

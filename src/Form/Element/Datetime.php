@@ -40,7 +40,7 @@ class Datetime extends Text {
 		return null;
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$d = '';
 		if ($this->getValue()) {
 			$t = strtotime($this->prepareValue($this->getValue()));

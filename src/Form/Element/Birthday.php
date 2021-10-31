@@ -110,7 +110,7 @@ class Birthday extends Xhtml {
 		return null;
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '';
 		$html .= $this->getHtmlItem('day', $this->getDays());
 		$html .= $this->getHtmlItem('month', $this->getMonths());

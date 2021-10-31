@@ -50,7 +50,7 @@ class File extends AbstractInput {
 		return true;
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '<div id="' . $this->id . '_files" class="box">';
 		$value = $this->getValue();
 		if ($value) {

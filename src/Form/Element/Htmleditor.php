@@ -7,7 +7,7 @@ class Htmleditor extends Textarea{
 		return trim((string)$value);
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
         $html = parent::getHtml();
 		if (true === $this->htmleditor)
 			$html .= '<script type="text/javascript">Application.initHtmlEditor("#' . $this->id . '");</script>';

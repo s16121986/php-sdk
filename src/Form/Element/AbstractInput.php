@@ -12,7 +12,7 @@ abstract class AbstractInput extends Xhtml {
 		$this->attributes->allow('inputmode');
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		return '<input type="' . $this->inputType . '"'
 			. $this->attributes
 			. ' value="' . self::escape($this->getValue()) . '" />'

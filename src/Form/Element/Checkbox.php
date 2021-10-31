@@ -58,7 +58,7 @@ class Checkbox extends AbstractInput {
 		return ($this->getValue() == $this->checkedValue);
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		return '<input type="checkbox"' . $this->attributes . ' value="' . $this->checkedValue . '"' . ($this->isChecked() ? ' checked="checked"' : '') . ' />';
 	}
 

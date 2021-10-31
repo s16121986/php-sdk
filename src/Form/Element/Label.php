@@ -11,7 +11,7 @@ class Label extends Xhtml{
 		return false;
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		return '<span' . $this->attrToString() . '>' . $this->getValue() . '</span>';
 	}
 
