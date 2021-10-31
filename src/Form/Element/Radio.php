@@ -21,7 +21,7 @@ class Radio extends Xhtml {
 		return $value;
 	}
 
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return (null === $this->value);
 	}
 

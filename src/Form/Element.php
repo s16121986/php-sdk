@@ -235,7 +235,7 @@ abstract class Element {
 		return $this;
 	}
 
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return empty($this->value);
 	}
 

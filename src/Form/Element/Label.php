@@ -3,7 +3,9 @@ namespace Form\Element;
 
 class Label extends Xhtml{
 
-	protected $options = [];
+	protected $options = [
+		'readable' => false
+	];
 
 	public function isSubmittable() {
 		return false;

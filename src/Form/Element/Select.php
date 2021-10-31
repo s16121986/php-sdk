@@ -159,6 +159,10 @@ class Select extends Xhtml {
 		}
 	}
 
+	public function isEmpty(): bool {
+		return $this->value === $this->emptyValue;
+	}
+
 	protected function prepareValue($value) {
 		if ($value === self::EMPTY_VALUE) {
 			return $this->emptyValue;
@@ -262,10 +266,6 @@ class Select extends Xhtml {
 		$html .= $this->getOptionsHtml();
 		$html .= '</select>';
 		return $html;
-	}
-
-	public function isEmpty() {
-		return (null === $this->value);
 	}
 
 }

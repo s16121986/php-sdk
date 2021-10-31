@@ -37,7 +37,7 @@ class Number extends AbstractInput {
 		return ($this->fractionDigits ? (float)$value : (int)$value);
 	}
 
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return (0 !== $this->value && empty($this->value));
 	}
 

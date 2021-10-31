@@ -180,6 +180,28 @@ class Fieldset {
 		return $data;
 	}
 
+	public function getFilledData(): array {
+		$data = [];
+
+		foreach ($this->elements as $element) {
+			if ($element->disabled || !$element->readable || $element->isEmpty())
+				continue;
+
+			switch ($element->type) {
+				case 'label':
+					break;
+				default:
+					$data[$element->name] = $element->getValue();
+			}
+		}
+
+		foreach ($this->values as $k => $v) {
+			$data[$k] = $v;
+		}
+
+		return $data;
+	}
+
 	public function setData($data) {
 		foreach ($this->elements as $element) {
 			if (isset($data[$element->name])) {
