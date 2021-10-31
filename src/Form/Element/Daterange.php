@@ -2,8 +2,7 @@
 
 namespace Gsdk\Form\Element;
 
-use Gsdk\Stdlib\Format;
-use Gsdk\Stdlib\DateTime;
+use Gsdk\DateTime;
 
 class Daterange extends Date {
 
@@ -15,8 +14,8 @@ class Daterange extends Date {
 
 		$dates = explode(self::delimiter, $value);
 		return [
-			'valueFrom' => $dates[0] ? DateTime::serverDate($dates[0]) : null,
-			'valueTo' => (isset($dates[1]) && $dates[1]) ? DateTime::serverDate($dates[1]) : null
+			'valueFrom' => $dates[0] ? (new DateTime($dates[0]))->format('Y-m-d') : null,
+			'valueTo' => (isset($dates[1]) && $dates[1]) ? (new DateTime($dates[1]))->format('Y-m-d') : null
 		];
 	}
 
@@ -35,7 +34,7 @@ class Daterange extends Date {
 			$d = implode(self::delimiter, $a);
 		}
 
-		return '<input type="' . $this->inputType . '"'
+		return '<input type="text"'
 			. $this->attributes . ' value="' . $d . '" />'
 			. $this->attributes->getHtml();
 	}
