@@ -9,7 +9,7 @@ class Enum extends Select {
 			$this->_items = [];
 			$items = [];
 			if ($this->enum)
-				$items = call_user_func(['\\' . $this->enum, 'getLabels']);
+				$items = call_user_func(['\\' . $this->enum, 'labels']);
 
 			if (is_array($this->items))
 				$items = array_merge($this->items, $items);
