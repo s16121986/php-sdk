@@ -127,9 +127,8 @@ abstract class Element {
 	public function getId() {
 		if (!isset($this->options['id'])) {
 			$parts = [];
-			if ($this->parent && $this->parent->getId()) {
+			if ($this->parent && $this->parent->getId())
 				$parts[] = $this->parent->getId();
-			}
 			$parts[] = $this->name;
 			$this->setId(implode('_', $parts));
 		}

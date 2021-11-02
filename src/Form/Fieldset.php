@@ -80,7 +80,11 @@ class Fieldset {
 		if (isset($this->options['id']))
 			return $this->options['id'];
 
-		return ($this->name ? strtolower(str_replace('\\', '_', get_class($this))) . '_' . $this->name : null);
+		$class = get_class($this);
+		$class = str_replace(__NAMESPACE__ . '\\', '', $class);
+		$class = str_replace('\\', '_', $class);
+
+		return ($this->name ? strtolower($class) . '_' . $this->name : null);
 	}
 
 	public function setParent($parent) {
