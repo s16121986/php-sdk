@@ -1,5 +1,5 @@
 <?php
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
 
 class Price extends Number{
 
@@ -21,8 +21,8 @@ class Price extends Number{
 		} else {
 			$cv = call_user_func(['\\' . $this->enum, 'getDefault']);
 		}
-		
-		return parent::render($value, $row) 
+
+		return parent::render($value, $row)
 			. ' <span>' . call_user_func(array('\\' . $this->enum, 'getLabel'), $cv) . '</span>';
 	}
 

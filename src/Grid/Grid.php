@@ -1,9 +1,9 @@
 <?php
 
-namespace Corelib\Grid;
+namespace Gsdk\Grid;
 
-use Grid\Data;
-use Corelib\Grid\Util\Sorting;
+use Gsdk\Grid\Data\Data;
+use Gsdk\Grid\Util\Sorting;
 
 class Grid {
 
@@ -15,7 +15,7 @@ class Grid {
 		'viewConfig' => null,
 		'orderUrl' => null
 	];
-	protected $columns = [];
+	protected array $columns = [];
 	protected $data = null;
 	protected $sorting;
 
@@ -26,7 +26,7 @@ class Grid {
 		$this->sorting = new Sorting($options);
 	}
 
-	public function __get($name) {
+	public function __get(string $name) {
 		if (isset($this->$name))
 			return $this->$name;
 
@@ -37,19 +37,19 @@ class Grid {
 		$this->options[$name] = $value;
 	}
 
-	public function setOptions($options) {
+	public function setOptions($options): static {
 		foreach ($options as $k => $v) {
 			$this->setOption($k, $v);
 		}
 		return $this;
 	}
 
-	public function setOption($key, $option) {
+	public function setOption($key, $option): static {
 		$this->options[$key] = $option;
 		return $this;
 	}
 
-	public function addColumn($column, $type = null, array $options = []) {
+	public function addColumn($column, $type = 'text', array $options = []): static {
 		if (is_array($type)) {
 			$options = $type;
 			$type = 'text';
@@ -69,7 +69,7 @@ class Grid {
 		return $this;
 	}
 
-	public function getColumns() {
+	public function getColumns(): array {
 		return $this->columns;
 	}
 
@@ -81,18 +81,18 @@ class Grid {
 		return $this->data;
 	}
 
-	public function setData($data) {
+	public function setData($data): static {
 		$this->data->set($data);
 		return $this;
 	}
 
-	public function setParams(array $params) {
+	public function setParams(array $params): static {
 		$this->data->setParams($params);
 		return $this;
 	}
 
-	public function setPaginator($paginator) {
-		$this->data->setPaginator($paginator);
+	public function paginator($paginator = null) {
+		$this->data->paginator($paginator);
 		return $this;
 	}
 

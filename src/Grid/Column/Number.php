@@ -1,6 +1,8 @@
 <?php
 
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
+
+use Gsdk\Format;
 
 class Number extends AbstractColumn {
 
@@ -16,10 +18,10 @@ class Number extends AbstractColumn {
 	}
 
 	public function formatValue($value, $row = null) {
-		return ($this->format ? \Format::formatNumber($value, $this->format) : $value);
+		return ($this->format ? Format::number($value, $this->format) : $value);
 	}
 
-	private static function isNullValue($value) {
+	private static function isNullValue($value): bool {
 		return ('' === $value || null === $value);
 	}
 

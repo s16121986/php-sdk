@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
 
 use Api\File\Util as FileUtil;
 

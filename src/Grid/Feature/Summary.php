@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Grid\Feature;
+namespace Gsdk\Grid\Feature;
 
 class Summary extends AbstractFeature {
 

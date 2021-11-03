@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Grid\Util;
+namespace Gsdk\Grid\Util;
 
 class Sorting {
 
@@ -38,7 +38,7 @@ class Sorting {
 			$this->params = $_GET;
 
 		if (!$set('orderby', ['orderby']))
-			$this->orderby = isset($this->params[self::PARAM_ORDERBY]) ? $this->params[self::PARAM_ORDERBY] : null;
+			$this->orderby = $this->params[self::PARAM_ORDERBY] ?? null;
 
 		if (!$set('sortorder', ['sortorder']))
 			$this->sortorder = isset($this->params[self::PARAM_SORTORDER]) && $this->params[self::PARAM_SORTORDER] === 'desc' ? 'desc' : 'asc';
@@ -52,14 +52,14 @@ class Sorting {
 
 	}
 
-	public function columnUrl($columnName): string {
+	public function columnUrl($column): string {
 		$dir = 'asc';
-		if ($this->orderby === $columnName)
+		if ($this->orderby === $column->name)
 			$dir = $this->sortorder == 'asc' ? 'desc' : 'asc';
 
 		$q = $this->params;
 
-		$q[self::PARAM_ORDERBY] = $columnName;
+		$q[self::PARAM_ORDERBY] = $column->name;
 		$q[self::PARAM_SORTORDER] = $dir;
 
 		return $this->url . '?' . http_build_query($q);
@@ -67,6 +67,13 @@ class Sorting {
 
 	public function setUrl(string $url) {
 		$this->url = $url;
+	}
+
+	public function get() {
+		return $this->orderby ? [
+			'orderby' => $this->orderby,
+			'sortorder' => $this->sortorder
+		] : [];
 	}
 
 	public function getParams(): ?array {

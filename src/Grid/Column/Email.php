@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
 
 class Email extends AbstractColumn {
 

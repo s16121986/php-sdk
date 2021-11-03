@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
 
 class Enum extends AbstractColumn {
 
@@ -9,11 +9,11 @@ class Enum extends AbstractColumn {
 	];
 
 	public function formatValue($value, $row = null) {
-		return call_enum_func($this->enum, 'getLabel', $value);
+		return call_user_func([$this->enum, 'getLabel'], $value);
 	}
 
 	public function render($value, $row) {
-		$class = $this->enum . ' ' . $this->enum . '_' . call_enum_func($this->enum, 'getKey', $value);
+		$class = $this->enum . ' ' . $this->enum . '_' . call_user_func([$this->enum, 'getKey'], $value);
 		if ($this->icon) {
 			return '<i class="' . $class . '" title="' . parent::render($value, $row) . '"></i>';
 		} else {

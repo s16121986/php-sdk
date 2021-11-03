@@ -1,5 +1,5 @@
 <?php
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
 
 class Text extends AbstractColumn{
 

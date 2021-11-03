@@ -1,10 +1,10 @@
 <?php
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
 
 class Phone extends AbstractColumn{
 
 	protected $_options = array(
 		'href' => 'tel:%value%'
 	);
-	
+
 }

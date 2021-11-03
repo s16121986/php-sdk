@@ -1,6 +1,6 @@
 <?php
 
-namespace Corelib\Grid\View;
+namespace Gsdk\Grid\View;
 
 class Table extends AbstractView {
 
@@ -32,8 +32,7 @@ class Table extends AbstractView {
 		$ri = 0;
 		foreach ($this->grid->getData()->get() as $row) {
 			$row = (object)$row;
-			$cls = call_user_func_array($this->rowCls, [$row, $ri++]);
-			$html .= '<tr' . ($cls ? ' class="' . $cls . '"' : '') . '>';
+			$html .= '<tr>';
 			foreach ($this->grid->getColumns() as $column) {
 				$html .= $this->getColumnTd($column, $row);
 			}

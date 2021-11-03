@@ -1,8 +1,8 @@
 <?php
 
-namespace Corelib\Grid\View;
+namespace Gsdk\Grid\View;
 
-use Grid;
+use Gsdk\Grid\Grid;
 
 abstract class AbstractView {
 
@@ -28,7 +28,12 @@ abstract class AbstractView {
 		if ($this->grid->isEmpty())
 			return '<div class="grid-empty-text">' . $this->grid->emptyGridText . '</div>';
 
-		return $this->_render();
+		$html = $this->_render();
+		$data = $this->grid->getData();
+		if (($paginator = $data->paginator))
+			$html .= $paginator->render();
+
+		return $html;
 	}
 
 	public function initFeatures(): array {
@@ -44,7 +49,7 @@ abstract class AbstractView {
 			if (!preg_match('/^[a-z_]+$/i', $name))
 				throw new \Exception('Invalid feature');
 
-			$cls = 'Corelib\Grid\Feature\\' . ucfirst($name);
+			$cls = 'Gsdk\Grid\Feature\\' . ucfirst($name);
 			if (!class_exists($cls, true))
 				throw new \Exception('Feature not exists');
 
@@ -65,10 +70,12 @@ abstract class AbstractView {
 		if (null === $columnValue || '' === $columnValue)
 			return $column->emptyText;
 
-		//$row['value'] = $value;
-		if ($column->href)
-			return '<a href="' . \Format::formatTemplate($column->href, $row) . '"'
-				. ($column->hrefTarget ? ' target="' . $column->hrefTarget . '"' : '') . '>' . $columnValue . '</a>';
+		if ($column->href) {
+			$href = preg_replace_callback('/{(.+)}/', function ($m) use ($row) {
+				return $row->{$m[1]} ?? '';
+			}, $column->href);
+			return '<a href="' . $href . '"' . ($column->hrefTarget ? ' target="' . $column->hrefTarget . '"' : '') . '>' . $columnValue . '</a>';
+		}
 
 		return $columnValue;
 	}
@@ -87,7 +94,7 @@ abstract class AbstractView {
 		$html = '<th class="' . $this->getColumnClass($column) . '">';
 		if ($column->order) {
 			$html .= '<div class="column-inner">';
-			$html .= '<a href="' . $this->orderurl($column) . '">';
+			$html .= '<a href="' . $sorting->columnUrl($column) . '">';
 			$html .= $column->text;
 			$html .= '</a>';
 			if ($sorting->orderby == $column->name)

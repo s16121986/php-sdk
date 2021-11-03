@@ -1,8 +1,8 @@
 <?php
 
-namespace Corelib\Grid\Column;
+namespace Gsdk\Grid\Column;
 
-use Stdlib\DateTime;
+use Gsdk\DateTime;
 
 class Date extends AbstractColumn {
 
@@ -12,11 +12,11 @@ class Date extends AbstractColumn {
 
 	public function formatValue($value, $row = null) {
 		$t = strtotime($value);
-		if ($t > 0) {
-			$d = DateTime::factory($t)->format($this->format);
-		} else {
+		if ($t > 0)
+			$d = (new DateTime($t))->format($this->format);
+		else
 			$d = '';
-		}
+
 		return parent::formatValue($d, $row);
 	}
 
