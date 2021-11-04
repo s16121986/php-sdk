@@ -8,7 +8,6 @@ abstract class AbstractView {
 
 	protected $grid;
 	protected $config = [];
-	protected $_url = null;
 
 	public function __construct(Grid $grid) {
 		$this->grid = $grid;
@@ -25,6 +24,8 @@ abstract class AbstractView {
 	}
 
 	public function render() {
+		$this->grid->setParams($this->grid->sorting->get());
+
 		if ($this->grid->isEmpty())
 			return '<div class="grid-empty-text">' . $this->grid->emptyGridText . '</div>';
 
@@ -49,7 +50,7 @@ abstract class AbstractView {
 			if (!preg_match('/^[a-z_]+$/i', $name))
 				throw new \Exception('Invalid feature');
 
-			$cls = 'Gsdk\Grid\Feature\\' . ucfirst($name);
+			$cls = 'App\Services\Grid\Feature\\' . ucfirst($name);
 			if (!class_exists($cls, true))
 				throw new \Exception('Feature not exists');
 

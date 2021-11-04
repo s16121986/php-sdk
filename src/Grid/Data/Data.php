@@ -24,7 +24,7 @@ class Data {
 			case 'paginator':
 				return $this->paginator;
 		}
-		return ($this->params[$name] ?? null);
+		return $this->params[$name] ?? null;
 	}
 
 	public function paginator($paginator = null): Paginator {
@@ -69,12 +69,9 @@ class Data {
 			return $this->data;
 
 		$data = $this->dataEntity;
-		if ($data instanceof Builder) {
-			if ($this->paginator)
-				$this->paginator->query($data);
-
-			$this->data = $data->get();
-		} else if (is_iterable($data))
+		if ($data instanceof Builder)
+			return $this->data = $this->getQueryData($data);
+		else if (is_iterable($data))
 			$this->data = $data;
 		else
 			$this->data = [];
@@ -82,31 +79,18 @@ class Data {
 		return $this->data;
 	}
 
-	public function load($params = []) {
-		$q = $_GET;
-		foreach (['orderby', 'sortorder'] as $k) {
-			if (isset($q[$k]) && $q[$k]) {
-				$params[$k] = $q[$k];
-			}
-		}
-		$this->setParams($params);
-		if ($this->paginator) {
-			$this->paginator->setCount($this->count());
-		}
-		$params = $this->getParams();
-		$this->set($this->api->select($params)->getItems());
-		return $this->data;
-	}
-
 	public function count(): int {
 		return $this->data ? count($this->data) : 0;
 	}
 
-	public function order($name, $direction = 'asc') {
-		return $this->setParams([
-			'orderby' => $name,
-			'sortorder' => $direction
-		]);
+	private function getQueryData($query) {
+		if ($this->paginator)
+			$this->paginator->query($query);
+
+		if ($this->orderby)
+			$query->orderBy($this->orderby, $this->sortorder ?? 'asc');
+
+		return $query->get();
 	}
 
 	public function isEmpty(): bool {
