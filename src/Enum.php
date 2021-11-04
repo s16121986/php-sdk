@@ -17,10 +17,10 @@ abstract class Enum {
 	 * @return array
 	 */
 	public static function constants(): array {
-		if (self::$constants)
-			return self::$constants;
+		if (static::$constants)
+			return static::$constants;
 
-		return self::$constants = (new ReflectionClass(get_called_class()))->getConstants();
+		return static::$constants = (new ReflectionClass(self::class))->getConstants();
 	}
 
 	/**
@@ -29,7 +29,7 @@ abstract class Enum {
 	 * @return array
 	 */
 	public static function values(): array {
-		return array_values(self::constants());
+		return array_values(static::constants());
 	}
 
 	/**
@@ -38,7 +38,7 @@ abstract class Enum {
 	 * @return array
 	 */
 	public static function keys(): array {
-		return array_keys(self::constants());
+		return array_keys(static::constants());
 	}
 
 	/**
@@ -47,9 +47,9 @@ abstract class Enum {
 	 * @return array
 	 */
 	public static function labels(): array {
-		$cls = self::getName();
+		$cls = static::getName();
 		$array = [];
-		foreach (self::constants() as $k => $v) {
+		foreach (static::constants() as $k => $v) {
 			$array[$v] = lang($cls . '::' . $k);
 		}
 		return $array;
@@ -62,7 +62,7 @@ abstract class Enum {
 	 * @return bool
 	 */
 	public static function valueExists($value): bool {
-		return in_array($value, self::constants());
+		return in_array($value, static::constants());
 	}
 
 	/**
@@ -72,7 +72,7 @@ abstract class Enum {
 	 * @return bool
 	 */
 	public static function keyExists(string $key): bool {
-		return array_key_exists($key, self::constants());
+		return array_key_exists($key, static::constants());
 	}
 
 	/**
@@ -83,7 +83,7 @@ abstract class Enum {
 	 */
 	public static function getValue($key) {
 		//$key = strtoupper($key);
-		foreach (self::constants() as $k => $v) {
+		foreach (static::constants() as $k => $v) {
 			if ($k == $key)
 				return $v;
 		}
@@ -97,7 +97,7 @@ abstract class Enum {
 	 * @return string
 	 */
 	public static function getKey($value) {
-		foreach (self::constants() as $k => $v) {
+		foreach (static::constants() as $k => $v) {
 			if ($v == $value)
 				return $k;
 		}
@@ -111,7 +111,7 @@ abstract class Enum {
 	 * @return string
 	 */
 	public static function getName($value = null): string {
-		return str_replace(__NAMESPACE__ . '\\', '', get_called_class()) . (null === $value ? '' : '::' . self::getKey($value));
+		return str_replace(__NAMESPACE__ . '\\', '', get_called_class()) . (null === $value ? '' : '::' . static::getKey($value));
 	}
 
 	/**
@@ -121,8 +121,8 @@ abstract class Enum {
 	 * @return string
 	 */
 	public static function getLabel($val): string {
-		$const = self::constants();
-		return (in_array($val, $const) ? lang(self::getName() . '::' . array_search($val, $const)) : '');
+		$const = static::constants();
+		return (in_array($val, $const) ? lang(static::getName() . '::' . array_search($val, $const)) : '');
 	}
 
 	/**
@@ -131,7 +131,7 @@ abstract class Enum {
 	 * @return mixed
 	 */
 	public static function default() {
-		$const = self::constants();
+		$const = static::constants();
 		return array_shift($const);
 	}
 
@@ -143,16 +143,16 @@ abstract class Enum {
 	 */
 	public static function asArray($valueIndex = false): array {
 		$array = [];
-		foreach (self::constants() as $k => $v) {
+		foreach (static::constants() as $k => $v) {
 			$array[$v] = $k;
 		}
 		return $array;
 	}
 
 	public static function getHtml($val): string {
-		$cls = self::getName();
-		$const = self::constants();
-		return '<span class="' . $cls . ' ' . self::getKey($val) . '">' . (in_array($val, $const) ? lang($cls . '::' . array_search($val, $const)) : '') . '</span>';
+		$cls = static::getName();
+		$const = static::constants();
+		return '<span class="' . $cls . ' ' . static::getKey($val) . '">' . (in_array($val, $const) ? lang($cls . '::' . array_search($val, $const)) : '') . '</span>';
 	}
 
 }
