@@ -2,7 +2,7 @@
 
 namespace Gsdk\Form\Element;
 
-use Gsdk\Stdlib\Format;
+use Gsdk\Format;
 
 class Date extends AbstractInput {
 
@@ -45,7 +45,7 @@ class Date extends AbstractInput {
 		if ($this->getValue()) {
 			$t = strtotime($this->prepareValue($this->getValue()));
 			if ($t > 0)
-				$d = Format::formatDate($t);
+				$d = Format::date($t);
 		}
 
 		return '<input type="' . $this->inputType . '"' . $this->attrToString() . ' value="' . $d . '" />';
