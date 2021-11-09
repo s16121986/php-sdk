@@ -48,7 +48,7 @@ class Date extends AbstractInput {
 				$d = Format::date($t);
 		}
 
-		return '<input type="' . $this->inputType . '"' . $this->attrToString() . ' value="' . $d . '" />';
+		return '<input type="' . $this->inputType . '"' . $this->attributes . ' value="' . $d . '" />';
 	}
 
 }
