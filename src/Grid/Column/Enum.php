@@ -13,7 +13,7 @@ class Enum extends AbstractColumn {
 	}
 
 	public function renderer($row, $value): string {
-		$class = call_user_func([$this->enum, 'getName'], $value);
+		$class = strtolower(call_user_func([$this->enum, 'getKey'], $value));
 		$label = call_user_func([$this->enum, 'getLabel'], $value);
 		if ($this->icon) {
 			return '<i class="' . $class . '" title="' . $label . '"></i>';
