@@ -63,10 +63,12 @@ abstract class AbstractView {
 	protected function getColumnText($column, $row) {
 		$dataValue = isset($row->{$column->name}) ? $row->{$column->name} : null;
 
-		$columnValue = $column->formatValue($dataValue, $row);
-
 		if ($column->renderer)
-			$columnValue = call_user_func_array($column->renderer, [$row, $columnValue, $column->params]);
+			$columnValue = call_user_func_array($column->renderer, [$row, $column->formatValue($dataValue, $row), $column->params]);
+		else if (method_exists($column, 'renderer'))
+			$columnValue = call_user_func_array([$column, 'renderer'], [$row, $dataValue, $column->params]);
+		else
+			$columnValue = $column->formatValue($dataValue, $row);
 
 		if (null === $columnValue || '' === $columnValue)
 			return $column->emptyText;
