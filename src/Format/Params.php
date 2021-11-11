@@ -2,12 +2,17 @@
 
 namespace Gsdk\Format;
 
+use Gsdk\Format;
+
 class Params {
 
 	private array $params = [];
 	private array $data = [];
 
 	private static function formatParam($value, $options) {
+		if (!is_scalar($value))
+			$value = serialize($value);
+
 		switch ($options['type']) {
 			case 'text':
 				break;
@@ -25,23 +30,22 @@ class Params {
 				$options['href'] = $value;
 				break;
 			case 'enum':
-				$value = self::formatEnum($value, $options['enum']);
+				$value = call_user_func([$options['enum'], 'getLabel'], $value);
 				break;
 			case 'array':
 				$value = ($options['array'][$value] ?? null);
 				break;
 			case 'price':
-				$value = self::formatNumber($value, self::PRICE_FORMAT)
-					. ' <span>' . CURRENCY::getLabel(CURRENCY::getDefault()) . '</span>';
+				$value = Format::number($value, Format::PRICE_FORMAT)
+					. (isset($options['currency']) ? ' <span>' . $options['currency'] . '</span>' : '');
 				break;
 			default:
-				$fn = 'format' . ucfirst($options['type']);
-				if (method_exists(__NAMESPACE__, $fn)) {
+				if (method_exists(Format::class, $options['type'])) {
 					$fnParams = [$value];
 					if (isset($options['format']))
 						$fnParams[] = $options['format'];
 
-					$value = call_user_func_array(['Format', $fn], $fnParams);
+					$value = call_user_func_array([Format::class, $options['type']], $fnParams);
 				}
 		}
 
