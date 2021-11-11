@@ -14,10 +14,11 @@ class Enum extends AbstractColumn {
 
 	public function renderer($row, $value): string {
 		$class = call_user_func([$this->enum, 'getName'], $value);
+		$label = call_user_func([$this->enum, 'getLabel'], $value);
 		if ($this->icon) {
-			return '<i class="' . $class . '" title="' . $value . '"></i>';
+			return '<i class="' . $class . '" title="' . $label . '"></i>';
 		} else {
-			return '<span class="' . $class . '">' . $value . '</span>';
+			return '<span class="' . $class . '">' . $label . '</span>';
 		}
 	}
 
