@@ -2,7 +2,7 @@
 
 namespace Gsdk\Form\Element;
 
-use Gsdk\Format;
+use DateTime;
 
 class Date extends AbstractInput {
 
@@ -18,37 +18,33 @@ class Date extends AbstractInput {
 	protected $attributes = ['min', 'max', 'step'];
 
 	protected function prepareValue($value) {
-		if ($value) {
-			if (is_numeric($value))
-				$t = $value;
-			else
-				$t = strtotime($value);
+		if (empty($value))
+			return null;
 
-			if ($t > 0) {
-				$value = date('Y-m-d', $t);
-				if ($this->max && ($value > $this->max))
-					return null;
+		if ($value instanceof DateTime)
+			$date = $value;
+		else if (is_numeric($value)) {
+			$date = new DateTime();
+			$date->setTimestamp($value);
+		} else if (is_string($value))
+			$date = new DateTime($value);
+		else
+			return null;
 
-				if ($this->min && ($value < $this->min))
-					return null;
+		$Ymd = $date->format('Y-m-d');
+		if ($this->max && ($Ymd > $this->max))
+			return null;
 
-				return $value;
-			}
-		} else if (false !== $this->emptyValue && $this->emptyValue === $value)
-			return $value;
+		if ($this->min && ($Ymd < $this->min))
+			return null;
 
-		return null;
+		return $date;
 	}
 
 	public function getHtml(): string {
-		$d = '';
-		if ($this->getValue()) {
-			$t = strtotime($this->prepareValue($this->getValue()));
-			if ($t > 0)
-				$d = Format::date($t);
-		}
+		$date = $this->getValue();
 
-		return '<input type="' . $this->inputType . '"' . $this->attributes . ' value="' . $d . '" />';
+		return '<input type="' . $this->inputType . '"' . $this->attributes . ' value="' . ($date ? $date->format($this->format) : '') . '" />';
 	}
 
 }
