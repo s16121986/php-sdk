@@ -96,7 +96,7 @@ class Select extends Xhtml {
 				return $this->setOption('validation', $option);
 		}
 
-		return parent::getOption($key, $option);
+		return parent::setOption($key, $option);
 	}
 
 	public function getGroups() {

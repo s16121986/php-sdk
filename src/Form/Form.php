@@ -151,4 +151,8 @@ class Form extends AbstractFieldset {
 		return $this->doAction('apiSubmit', $options);
 	}
 
+	public function __toString(): string {
+		return $this->render();
+	}
+
 }
