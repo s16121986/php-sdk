@@ -110,4 +110,8 @@ class Grid {
 		return $view->render();
 	}
 
+	public function __toString(): string {
+		return $this->render();
+	}
+
 }
