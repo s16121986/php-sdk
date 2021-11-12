@@ -52,7 +52,7 @@ class Sorting {
 			$this->orderby = $params[self::PARAM_ORDERBY];
 
 		if (isset($params[self::PARAM_SORTORDER]))
-			$this->sortorder = $this->params[self::PARAM_SORTORDER] === 'desc' ? 'desc' : 'asc';
+			$this->sortorder = $params[self::PARAM_SORTORDER] === 'desc' ? 'desc' : 'asc';
 	}
 
 	public function orderBy($name, $order = 'asc'): static {
