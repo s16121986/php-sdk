@@ -34,22 +34,31 @@ class Sorting {
 			$this->url = $url;
 		}
 
-		if (!$set('params', ['orderParams', 'sortingParams']))
-			$this->params = $_GET;
+		$set('params', ['orderParams', 'sortingParams']);
 
-		if (!$set('orderby', ['orderby']))
-			$this->orderby = $this->params[self::PARAM_ORDERBY] ?? null;
+		$set('orderby', ['orderby']);
 
-		if (!$set('sortorder', ['sortorder']))
-			$this->sortorder = isset($this->params[self::PARAM_SORTORDER]) && $this->params[self::PARAM_SORTORDER] === 'desc' ? 'desc' : 'asc';
+		$set('sortorder', ['sortorder']);
 	}
 
 	public function __get($name) {
 		return isset($this->$name) ? $this->$name : null;
 	}
 
-	public function setOptions() {
+	public function fromRequest() {
+		$params = $_GET;
 
+		if (isset($params[self::PARAM_ORDERBY]))
+			$this->orderby = $params[self::PARAM_ORDERBY];
+
+		if (isset($params[self::PARAM_SORTORDER]))
+			$this->sortorder = $this->params[self::PARAM_SORTORDER] === 'desc' ? 'desc' : 'asc';
+	}
+
+	public function orderBy($name, $order = 'asc'): static {
+		$this->orderby = $name;
+		$this->sortorder = $order;
+		return $this;
 	}
 
 	public function columnUrl($column): string {

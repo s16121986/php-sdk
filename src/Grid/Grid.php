@@ -91,6 +91,11 @@ class Grid {
 		return $this;
 	}
 
+	public function orderBy($name, $order = 'asc'): static {
+		$this->sorting->orderBy($name, $order);
+		return $this;
+	}
+
 	public function paginator($paginator = null) {
 		$this->data->paginator($paginator);
 		return $this;
@@ -105,6 +110,7 @@ class Grid {
 	}
 
 	public function render() {
+		$this->sorting->fromRequest();
 		$cls = __NAMESPACE__ . '\View\\' . $this->view;
 		$view = new $cls($this);
 		return $view->render();
