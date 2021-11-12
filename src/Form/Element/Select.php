@@ -21,7 +21,7 @@ class Select extends Xhtml {
 		'emptyValue' => null,
 		'emptyItemValue' => '',
 
-		'checkValue' => false,
+		'validation' => false,
 		'idKey' => 'id',
 		'nameKey' => 'name'
 	];
@@ -84,7 +84,7 @@ class Select extends Xhtml {
 	public function getOption($name) {
 		switch ($name) {
 			case 'allowNotExists':
-				return parent::getOption('checkValue');
+				return parent::getOption('validation');
 		}
 
 		return parent::getOption($name);
@@ -93,7 +93,7 @@ class Select extends Xhtml {
 	public function setOption($key, $option) {
 		switch ($key) {
 			case 'allowNotExists':
-				return $this->setOption('checkValue', $option);
+				return $this->setOption('validation', $option);
 		}
 
 		return parent::getOption($key, $option);
