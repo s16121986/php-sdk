@@ -21,7 +21,7 @@ class Select extends Xhtml {
 		'emptyValue' => null,
 		'emptyItemValue' => '',
 
-		'allowNotExists' => false,
+		'checkValue' => false,
 		'idKey' => 'id',
 		'nameKey' => 'name'
 	];
@@ -79,6 +79,24 @@ class Select extends Xhtml {
 		}
 
 		$this->_groups[] = $item;
+	}
+
+	public function getOption($name) {
+		switch ($name) {
+			case 'allowNotExists':
+				return parent::getOption('checkValue');
+		}
+
+		return parent::getOption($name);
+	}
+
+	public function setOption($key, $option) {
+		switch ($key) {
+			case 'allowNotExists':
+				return $this->setOption('checkValue', $option);
+		}
+
+		return parent::getOption($key, $option);
 	}
 
 	public function getGroups() {
