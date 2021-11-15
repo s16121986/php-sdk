@@ -29,7 +29,6 @@ class Table extends AbstractView {
 
 	protected function renderTBody(): string {
 		$html = '<tbody>';
-		$ri = 0;
 		foreach ($this->grid->getData()->get() as $row) {
 			$row = (object)$row;
 			$html .= '<tr>';

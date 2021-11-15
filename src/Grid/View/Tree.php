@@ -1,6 +1,6 @@
 <?php
 
-namespace Grid\View;
+namespace Gsdk\Grid\View;
 
 class Tree extends Table {
 
@@ -10,37 +10,37 @@ class Tree extends Table {
 		'indentColumn' => 'name'
 	];
 
-	protected function renderTBody() {
+	protected function renderTBody(): string {
 		$html = '<tbody>';
 		$html .= $this->tree(null);
 		$html .= '</tbody>';
 		return $html;
 	}
 
-	private function tree($parentId, $level = 0, &$index = 0) {
-		$html = '';
+	private function tree($parentId, $level = 0): string {
+		$html = '<tbody>';
 		foreach ($this->grid->getData()->get() as $row) {
-			if ($row->{$this->parentIndex} != $parentId) {
+			$row = (object)$row;
+			if ($row->{$this->parentIndex} != $parentId)
 				continue;
-			}
-			$html .= '<tr' . ($index % 2 ? ' class="alt"' : '') . '>';
-			$ci = 0;
+			$html .= '<tr>';
 			foreach ($this->grid->getColumns() as $column) {
-				$html .= '<td class="' . $this->_colCls($column) . ' column-' . ($ci++ % 2) . '">';
-				if ($column->name == $this->indentColumn) {
-					$html .= self::indentpad($this->treeIndent, $level);
-				}
-				$html .= $this->_cell($row, $column);
+				$html = '<td class="' . $this->getColumnClass($column) . '">';
+				if ($column->name == $this->indentColumn)
+					$html .= self::indentPad($this->treeIndent, $level);
+
+				$html .= $this->getColumnText($column, $row);
 				$html .= '</td>';
 			}
 			$html .= '</tr>';
-			$index++;
-			$html .= $this->tree($row->id, $level + 1, $index);
+			$html .= $this->tree($row->id, $level + 1);
 		}
+		$html .= '</tbody>';
+
 		return $html;
 	}
 
-	private static function indentpad($indent, $count) {
+	private static function indentPad($indent, $count): string {
 		return str_repeat($indent, $count);
 	}
 
