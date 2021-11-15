@@ -18,14 +18,14 @@ class Tree extends Table {
 	}
 
 	private function tree($parentId, $level = 0): string {
-		$html = '<tbody>';
+		$html = '';
 		foreach ($this->grid->getData()->get() as $row) {
 			$row = (object)$row;
 			if ($row->{$this->parentIndex} != $parentId)
 				continue;
 			$html .= '<tr>';
 			foreach ($this->grid->getColumns() as $column) {
-				$html = '<td class="' . $this->getColumnClass($column) . '">';
+				$html .= '<td class="' . $this->getColumnClass($column) . '">';
 				if ($column->name == $this->indentColumn)
 					$html .= self::indentPad($this->treeIndent, $level);
 
@@ -35,7 +35,6 @@ class Tree extends Table {
 			$html .= '</tr>';
 			$html .= $this->tree($row->id, $level + 1);
 		}
-		$html .= '</tbody>';
 
 		return $html;
 	}
