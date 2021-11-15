@@ -2,11 +2,17 @@
 
 namespace Gsdk\Form\Element;
 
-use Gsdk\DateTime;
+use DateTime;
 
 class Daterange extends Date {
 
 	const delimiter = ' - ';
+
+	protected $options = [
+		'pattern' => '',
+		'format' => 'd.m.Y',
+		'inputType' => 'daterange'
+	];
 
 	protected function prepareValue($value) {
 		if (!is_string($value) || !$value)
@@ -14,8 +20,8 @@ class Daterange extends Date {
 
 		$dates = explode(self::delimiter, $value);
 		return [
-			'valueFrom' => $dates[0] ? (new DateTime($dates[0]))->format('Y-m-d') : null,
-			'valueTo' => (isset($dates[1]) && $dates[1]) ? (new DateTime($dates[1]))->format('Y-m-d') : null
+			'valueFrom' => $dates[0] ? new DateTime($dates[0]) : null,
+			'valueTo' => (isset($dates[1]) && $dates[1]) ? new DateTime($dates[1]) : null
 		];
 	}
 
@@ -29,12 +35,12 @@ class Daterange extends Date {
 			$a = [];
 			foreach ($this->getValue() as $date) {
 				if ($date)
-					$a[] = (new DateTime($date))->format('date');
+					$a[] = $date->format($this->format);
 			}
 			$d = implode(self::delimiter, $a);
 		}
 
-		return '<input type="text"'
+		return '<input type="' . $this->inputType . '"'
 			. $this->attributes . ' value="' . $d . '" />'
 			. $this->attributes->getHtml();
 	}
