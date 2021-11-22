@@ -27,6 +27,10 @@ class Form extends AbstractFieldset {
 		ServiceManager::extend($type, $class);
 	}
 
+	public static function registerNamespace($namespace) {
+		ServiceManager::registerNamespace($namespace);
+	}
+
 	public static function __callStatic(string $name, array $arguments) {
 		$form = new static();
 		return call_user_func_array([$form, $name], $arguments);
