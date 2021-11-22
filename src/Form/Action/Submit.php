@@ -6,22 +6,22 @@ use Gsdk\Form\Form;
 
 class Submit {
 
-	protected $_options = [];
+	protected $options = [];
 
-	protected $_form;
+	protected $form;
 
 	public function __construct(Form $form, $options = []) {
-		$this->_form = $form;
-		$this->_options = $options;
+		$this->form = $form;
+		$this->options = $options;
 	}
 
 	public function __get($name) {
-		return (isset($this->_options[$name]) ? $this->_options[$name] : null);
+		return ($this->options[$name] ?? null);
 	}
 
-	public function submit() {
+	public function submit(): bool {
 		$return = false;
-		$form = $this->_form;
+		$form = $this->form;
 		if ($form->isSent()) {
 			$form->setSubmitted(true);
 			$sentData = $this->getSentData();
@@ -52,12 +52,12 @@ class Submit {
 	}
 
 	protected function getUploadData() {
-		$form = $this->_form;
+		$form = $this->form;
 		$files = $_FILES;
 		$data = [];
-		if ($form->name) {
+		if ($form->name)
 			$files = (isset($files[$form->name]) ? $files[$form->name] : []);
-		}
+
 		if (isset($files['tmp_name'])) {
 			foreach ($files as $paramName => $v) {
 				foreach ($v as $fieldName => $value) {
@@ -110,25 +110,21 @@ class Submit {
 				}
 			}
 		}
+
 		return $data;
 	}
 
 	protected function getSentData() {
-		$data = [];
-		$form = $this->_form;
-		switch ($form->method) {
-			case 'POST':
-				$data = $_POST;
-				break;
-			case 'GET':
-				$data = $_GET;
-				break;
-			default:
-				$data = $_REQUEST;
-		}
-		if ($form->getName()) {
+		$form = $this->form;
+		$data = match ($form->method) {
+			'post' => $_POST,
+			'get' => $_GET,
+			default => $_REQUEST,
+		};
+
+		if ($form->getName())
 			return (isset($data[$form->getName()]) ? $data[$form->getName()] : []);
-		}
+
 		return $data;
 	}
 
@@ -148,7 +144,7 @@ class Submit {
 			}
 			return $tmp;
 		}*/
-		return (isset($data[$name]) ? $data[$name] : null);
+		return ($data[$name] ?? null);
 	}
 
 }

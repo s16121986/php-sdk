@@ -8,20 +8,34 @@ use Gsdk\Form\Fieldset as AbstractFieldset;
 
 class Form extends AbstractFieldset {
 
-	const METHOD_GET = 'GET';
-	const METHOD_POST = 'POST';
-	const METHOD_DELETE = 'DELETE';
-	const METHOD_PUT = 'PUT';
+	const METHOD_GET = 'get';
+	const METHOD_POST = 'post';
+	const METHOD_DELETE = 'delete';
+	const METHOD_PUT = 'put';
 
 	protected $submitted = false;
 	protected $errors = [];
-	protected $options = [
+	protected array $options = [
 		'name' => null,
 		'baseParams' => [],
-		'method' => 'POST',
+		'method' => 'post',
 		'submitAction' => 'submit',
 		'successMessage' => false
 	];
+
+	public static function extend($type, $class) {
+		ServiceManager::extend($type, $class);
+	}
+
+	public static function __callStatic(string $name, array $arguments) {
+		$form = new static();
+		return call_user_func_array([$form, $name], $arguments);
+	}
+
+	public function __call(string $name, array $arguments) {
+		$this->addElement($arguments[0], $name, $arguments[1]);
+		return $this;
+	}
 
 	public function __construct($options = null) {
 		if (is_string($options))
@@ -40,12 +54,12 @@ class Form extends AbstractFieldset {
 		return $this;
 	}
 
-	public function setName($method) {
-		return $this->setOption('name', $method);
+	public function name($name): static {
+		return $this->setOption('name', $name);
 	}
 
-	public function setMethod($method) {
-		return $this->setOption('method', $method);
+	public function method($method): static {
+		return $this->setOption('method', strtolower($method));
 	}
 
 	public function setData($data) {
@@ -60,11 +74,11 @@ class Form extends AbstractFieldset {
 		return $this;
 	}
 
-	public function isSubmitted() {
+	public function isSubmitted(): bool {
 		return $this->submitted;
 	}
 
-	public function isSent() {
+	public function isSent(): bool {
 		switch ($this->method) {
 			case self::METHOD_POST:
 				return ('POST' == $_SERVER['REQUEST_METHOD'] && (!$this->getName() || (isset($_POST[$this->getName()]) || isset($_FILES[$this->getName()]))));
@@ -119,7 +133,7 @@ class Form extends AbstractFieldset {
 		return '';
 	}
 
-	public function isValid() {
+	public function isValid(): bool {
 		if (!empty($this->errors))
 			return false;
 

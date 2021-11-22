@@ -21,25 +21,16 @@ abstract class Element {
 	protected $parent;
 	protected $attributes;
 
-	public static function factory($name, $type, $options = null) {
-		if (!is_array($options))
-			$options = [];
+	public function __construct(string $name, $options = []) {
+		$this->setName($name);
 
-		$cls = __NAMESPACE__ . '\\Element\\' . ucfirst($type);
-		$element = new $cls($name, $options);
-
-		return $element;
-	}
-
-	public function __construct($name, $options = []) {
 		if (!isset($options['class']))
 			$options['class'] = '';
 
-		$options['type'] = strtolower(str_replace(__NAMESPACE__ . '\\Element\\', '', get_class($this)));
+		$options['type'] = strtolower((new \ReflectionClass($this))->getShortName());
 		$options['class'] .= ' field-' . $options['type'];
 
-		$this->setName($name)
-			->setOptions(array_merge(self::$defaultOptions, $options));
+		$this->setOptions(array_merge(self::$defaultOptions, $options));
 
 		$this->attributes = new Attributes($this, $this->attributes);
 
@@ -52,6 +43,10 @@ abstract class Element {
 
 	public function __get($name) {
 		return $this->getOption($name);
+	}
+
+	public function __call(string $name, array $arguments) {
+		return $this->setOption($name, $arguments[0]);
 	}
 
 	public function setOptions($options) {

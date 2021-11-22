@@ -11,7 +11,7 @@ class Fieldset {
 	protected $elements = [];
 	protected $values = [];
 	protected $parent = null;
-	protected $options = [
+	protected array $options = [
 		'name' => null,
 		'baseParams' => [],
 	];
@@ -45,14 +45,14 @@ class Fieldset {
 			$this->setOptions($options);
 	}
 
-	public function setOptions($options) {
+	public function setOptions($options): static {
 		foreach ($options as $k => $v) {
 			$this->setOption($k, $v);
 		}
 		return $this;
 	}
 
-	public function setOption($key, $option) {
+	public function setOption($key, $option): static {
 		switch ($key) {
 			case 'elements':
 				foreach ($option as $k => $el) {
@@ -65,6 +65,7 @@ class Fieldset {
 			default:
 				$this->options[$key] = $option;
 		}
+
 		return $this;
 	}
 
@@ -115,13 +116,9 @@ class Fieldset {
 			unset($options['name'], $options['type']);
 		}
 
-		if (is_string($element) || is_integer($element)) {
-			$cls = __NAMESPACE__ . '\\Element\\' . ucfirst($type);
-			/*if (!class_exists($cls, false)) {
-				include 'Library/' . str_replace('\\', '/', $cls) . '.php';
-			}*/
-			$element = new $cls($element, $options);
-		} else if ($element instanceof Element) {
+		if (is_string($element) || is_integer($element))
+			$element = ServiceManager::elementFactory($element, $type, $options);
+		else if ($element instanceof Element) {
 
 		} else {
 
@@ -215,7 +212,7 @@ class Fieldset {
 		return $this;
 	}
 
-	public function hasUpload() {
+	public function hasUpload(): bool {
 		foreach ($this->getElements() as $element) {
 			if ($element->isFileUpload()) {
 				return true;
@@ -224,7 +221,7 @@ class Fieldset {
 		return false;
 	}
 
-	public function isValid() {
+	public function isValid(): bool {
 		foreach ($this->elements as $element) {
 			if (!$element->isValid())
 				return false;
@@ -232,14 +229,14 @@ class Fieldset {
 		return true;
 	}
 
-	public function isSubmitted() {
+	public function isSubmitted(): bool {
 		if (($form = $this->getForm())) {
 			return $form->isSubmitted();
 		}
 		return false;
 	}
 
-	public function render() {
+	public function render(): string {
 		$elements = func_get_args();
 		if (empty($elements)) {
 			$elements = array_keys($this->elements);
@@ -256,7 +253,7 @@ class Fieldset {
 		return $html;
 	}
 
-	public function renderElement($element) {
+	public function renderElement($element): string {
 		if (is_string($element)) {
 			$element = $this->getElement($element);
 			if (!$element) {
