@@ -8,7 +8,7 @@ class ServiceManager {
 	private static array $extendedElements = [];
 
 	public static function registerNamespace($path) {
-		self::$extendedPaths = $path;
+		self::$extendedNamespaces = $path;
 	}
 
 	public static function extend($type, $class) {
