@@ -37,7 +37,7 @@ class Form extends AbstractFieldset {
 	}
 
 	public function __call(string $name, array $arguments) {
-		$this->addElement($arguments[0], $name, $arguments[1]);
+		$this->addElement($arguments[0], $name, $arguments[1] ?? []);
 		return $this;
 	}
 

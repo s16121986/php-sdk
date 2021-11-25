@@ -112,7 +112,12 @@ abstract class Element {
 	}
 
 	public function getForm() {
-		return ($this->parent instanceof Form ? $this->parent : null);
+		if ($this->parent instanceof Form)
+			return $this->parent;
+		else if ($this->parent)
+			return $this->parent->getForm();
+		else
+			return null;
 	}
 
 	public function setForm($form) {

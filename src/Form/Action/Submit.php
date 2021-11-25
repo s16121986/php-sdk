@@ -25,29 +25,29 @@ class Submit {
 		if ($form->isSent()) {
 			$form->setSubmitted(true);
 			$sentData = $this->getSentData();
-			if ($form->hasUpload()) {
+			if ($form->hasUpload())
 				$uploadData = $this->getUploadData();
-			}
+
 			$return = true;
 			foreach ($form->getElements() as $element) {
-				if ($element->disabled) {
+				if ($element->disabled)
 					continue;
-				}
+
 				if ($element->isFileUpload()) {
-					if (isset($uploadData[$element->name])) {
+					if (isset($uploadData[$element->name]))
 						$element->setValue($uploadData[$element->name]);
-					}
-					if (isset($sentData[$element->name])) {
+
+					if (isset($sentData[$element->name]))
 						$element->setData($sentData[$element->name]);
-					}
-				} else if ($element->isSubmittable()) {
+
+				} else if ($element->isSubmittable())
 					$element->setValue(self::getElementValue($sentData, $element));
-				}
-				if ($return && !$element->isValid()) {
+
+				if ($return && !$element->isValid())
 					$return = false;
-				}
 			}
 		}
+
 		return $return;
 	}
 

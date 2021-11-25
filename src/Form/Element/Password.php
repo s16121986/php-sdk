@@ -13,4 +13,8 @@ class Password extends AbstractInput {
 		return !empty($value);
 	}
 
+	public function getHtml(): string {
+		return '<input type="' . $this->inputType . '"' . $this->attributes . ' />';
+	}
+
 }
