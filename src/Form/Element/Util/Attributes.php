@@ -25,12 +25,10 @@ class Attributes {
 		return $html;
 	}
 
-	public function __toString() {
+	public function withoutName(): string {
 		$element = $this->element;
 
 		$attr = [];
-
-		$attr[] = 'name="' . $element->getInputName() . '"';
 
 		foreach (array_merge(['id', 'class'], $this->attributes) as $k) {
 			$value = self::getAttributeValue($element, $k);
@@ -47,6 +45,11 @@ class Attributes {
 			$attr = $element->attr;
 
 		return ' ' . implode(' ', $attr);
+	}
+
+	public function __toString() {
+		return ' name="' . $this->element->getInputName() . '"'
+			. $this->withoutName();
 	}
 
 	private static function getAttributeValue($element, $name) {
@@ -85,7 +88,7 @@ class Attributes {
 		}
 	}
 
-	private static function getAttributeHtml($element, $name) {
+	private static function getAttributeHtml($element, $name): ?string {
 		$value = $element->$name;
 
 		if (null === $value)
@@ -108,7 +111,7 @@ class Attributes {
 		}
 	}
 
-	private static function getDatalistId($element) {
+	private static function getDatalistId($element): string {
 		return $element->getId() . '_datalist';
 	}
 
