@@ -3,6 +3,7 @@
 namespace Gsdk\Grid\Data;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Paginator;
 
 class Data {
@@ -69,7 +70,9 @@ class Data {
 			return $this->data;
 
 		$data = $this->dataEntity;
-		if ($data instanceof Builder)
+		if (empty($data))
+			return null;
+		else if ($data instanceof Builder)
 			return $this->data = $this->getQueryData($data);
 		else if (is_iterable($data))
 			$this->data = $data;
@@ -94,7 +97,11 @@ class Data {
 	}
 
 	public function isEmpty(): bool {
-		return empty($this->get());
+		$data = $this->get();
+		if ($data instanceof Collection)
+			return $data->isEmpty();
+		else
+			return empty($data);
 	}
 
 }
