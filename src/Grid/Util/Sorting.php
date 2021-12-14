@@ -48,6 +48,8 @@ class Sorting {
 	public function fromRequest() {
 		$params = $_GET;
 
+		$this->params = $params;
+
 		if (isset($params[self::PARAM_ORDERBY]))
 			$this->orderby = $params[self::PARAM_ORDERBY];
 
