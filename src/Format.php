@@ -169,8 +169,8 @@ abstract class Format {
 
 	public static function boolean($value, $format) {
 		$format = self::parseFormat($format, [
-			self::BT => lang('True'),
-			self::BF => lang('False')
+			self::BT => 'True',
+			self::BF => 'False'
 		]);
 		return ($value ? $format[self::BT] : $format[self::BF]);
 	}
