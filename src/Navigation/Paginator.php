@@ -2,7 +2,6 @@
 
 namespace Gsdk\Navigation;
 
-use Illuminate\Database\Eloquent\Builder;
 use stdClass;
 
 class Paginator {
@@ -151,7 +150,7 @@ class Paginator {
 		return $pages;
 	}
 
-	public function query(Builder $query): static {
+	public function query($query): static {
 		$count = $query->count();
 		$this->setCount($count);
 		$query
