@@ -2,6 +2,7 @@
 
 namespace Gsdk\Grid\Data;
 
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Paginator;
@@ -72,7 +73,7 @@ class Data {
 		$data = $this->dataEntity;
 		if (empty($data))
 			return null;
-		else if ($data instanceof Builder)
+		else if ($data instanceof Builder || $data instanceof QueryBuilder)
 			return $this->data = $this->getQueryData($data);
 		else if (is_iterable($data))
 			$this->data = $data;
