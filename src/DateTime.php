@@ -8,9 +8,9 @@ use Exception;
 
 class DateTime extends BaseDateTime {
 
-	private static $serverTimezone;
+	private static $serverTimeZone;
 
-	private static $regionTimezone;
+	private static $regionTimeZone;
 
 	private static array $formats = [
 		'date' => 'Y-m-d',
@@ -18,29 +18,29 @@ class DateTime extends BaseDateTime {
 		'datetime' => 'Y-m-d H:i:s'
 	];
 
-	public static function setServerTimezone($timezone) {
+	public static function setServerTimeZone($timezone) {
 		if (is_string($timezone))
 			$timezone = new DateTimeZone($timezone);
 
-		self::$serverTimezone = $timezone;
+		self::$serverTimeZone = $timezone;
 	}
 
-	public static function getServerTimezone(): DateTimeZone {
+	public static function getServerTimeZone(): DateTimeZone {
 		if (null === self::$serverTimeZone)
 			self::$serverTimeZone = new DateTimeZone('UTC');
 
 		return self::$serverTimeZone;
 	}
 
-	public static function setRegionTimezone($timezone) {
+	public static function setRegionTimeZone($timezone) {
 		if (is_string($timezone))
 			$timezone = new DateTimeZone($timezone);
 
-		self::$serverTimezone = $timezone;
+		self::$serverTimeZone = $timezone;
 	}
 
-	public static function getRegionTimezone(): DateTimeZone {
-		return self::$regionTimezone ?? self::getServerTimezone();
+	public static function getRegionTimeZone(): DateTimeZone {
+		return self::$regionTimeZone ?? self::getServerTimeZone();
 	}
 
 	public static function setFormats($formats) {
@@ -71,7 +71,7 @@ class DateTime extends BaseDateTime {
 		else if (!is_int($time))
 			throw new Exception('$time type is invalid');
 
-		parent::__construct('now', self::getServerTimezone());
+		parent::__construct('now', self::getServerTimeZone());
 		$this->setTimestamp($time);
 		$this->setTimezone($timezone);
 	}
@@ -79,8 +79,8 @@ class DateTime extends BaseDateTime {
 	public function setTimezone($timezone): DateTime {
 		if (is_string($timezone)) {
 			$timezone = match ($timezone) {
-				'offset', 'server' => self::getServerTimezone(),
-				'region', 'client' => self::getRegionTimezone(),
+				'offset', 'server' => self::getServerTimeZone(),
+				'region', 'client' => self::getRegionTimeZone(),
 				default => throw new Exception('Timezone [' . $timezone . '] undefined'),
 			};
 		}
