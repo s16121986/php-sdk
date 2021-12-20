@@ -11,13 +11,7 @@ class Date extends AbstractColumn {
 	];
 
 	public function formatValue($value, $row = null) {
-		$t = strtotime($value);
-		if ($t > 0)
-			$d = (new DateTime($t))->format($this->format);
-		else
-			$d = '';
-
-		return parent::formatValue($d, $row);
+		return parent::formatValue((new DateTime($value))->format($this->format), $row);
 	}
 
 }

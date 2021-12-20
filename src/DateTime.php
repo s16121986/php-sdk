@@ -4,8 +4,13 @@ namespace Gsdk;
 
 use DateTime as BaseDateTime;
 use DateTimeZone;
+use Exception;
 
 class DateTime extends BaseDateTime {
+
+	private static $serverTimezone;
+
+	private static $regionTimezone;
 
 	private static array $formats = [
 		'date' => 'Y-m-d',
@@ -13,8 +18,29 @@ class DateTime extends BaseDateTime {
 		'datetime' => 'Y-m-d H:i:s'
 	];
 
-	public static function now($timezone = null): DateTime {
-		return new DateTime('now', $timezone);
+	public static function setServerTimezone($timezone) {
+		if (is_string($timezone))
+			$timezone = new DateTimeZone($timezone);
+
+		self::$serverTimezone = $timezone;
+	}
+
+	public static function getServerTimezone(): DateTimeZone {
+		if (null === self::$serverTimeZone)
+			self::$serverTimeZone = new DateTimeZone('UTC');
+
+		return self::$serverTimeZone;
+	}
+
+	public static function setRegionTimezone($timezone) {
+		if (is_string($timezone))
+			$timezone = new DateTimeZone($timezone);
+
+		self::$serverTimezone = $timezone;
+	}
+
+	public static function getRegionTimezone(): DateTimeZone {
+		return self::$regionTimezone ?? self::getServerTimezone();
 	}
 
 	public static function setFormats($formats) {
@@ -25,14 +51,41 @@ class DateTime extends BaseDateTime {
 		return self::$formats[$format] ?? null;
 	}
 
-	public function __construct($time = 'now', ?DateTimeZone $timezone = null) {
+	public static function now($timezone = null): DateTime {
+		return new static('now', $timezone);
+	}
+
+	public function __construct($time = 'now', $timezone = null) {
+		if (null === $timezone)
+			$timezone = 'client';
+
 		if (null === $time)
-			return parent::__construct('now', $timezone);
-		else if (is_int($time)) {
-			parent::__construct('now', $timezone);
-			$this->setTimestamp($time);
-		} else
-			return parent::__construct($time, $timezone);
+			$time = strtotime('now');
+		else if ($time instanceof BaseDateTime) {
+			parent::__construct('now', $time->getTimezone());
+			$this->setTimestamp($time->getTimestamp());
+			$this->setTimezone($timezone);
+			return;
+		} else if (is_string($time))
+			$time = strtotime($time);
+		else if (!is_int($time))
+			throw new Exception('$time type is invalid');
+
+		parent::__construct('now', self::getServerTimezone());
+		$this->setTimestamp($time);
+		$this->setTimezone($timezone);
+	}
+
+	public function setTimezone($timezone): DateTime {
+		if (is_string($timezone)) {
+			$timezone = match ($timezone) {
+				'offset', 'server' => self::getServerTimezone(),
+				'region', 'client' => self::getRegionTimezone(),
+				default => throw new Exception('Timezone [' . $timezone . '] undefined'),
+			};
+		}
+
+		return parent::setTimezone($timezone);
 	}
 
 	public function clone($timezone = null): DateTime {
