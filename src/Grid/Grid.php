@@ -19,6 +19,14 @@ class Grid {
 	protected $data = null;
 	protected $sorting;
 
+	public static function extend($type, $class) {
+		ServiceManager::extend($type, $class);
+	}
+
+	public static function registerNamespace($namespace) {
+		ServiceManager::registerNamespace($namespace);
+	}
+
 	public function __construct($options = []) {
 		$this->setOptions($options);
 		$this->data = new Data();
@@ -30,7 +38,7 @@ class Grid {
 		if (isset($this->$name))
 			return $this->$name;
 
-		return (isset($this->options[$name]) ? $this->options[$name] : null);
+		return ($this->options[$name] ?? null);
 	}
 
 	public function __set($name, $value) {
@@ -54,17 +62,13 @@ class Grid {
 			$options = $type;
 			$type = 'text';
 		}
-		if (is_string($column)) {
-			$cls = __NAMESPACE__ . '\\Column\\' . ucfirst($type);
-			/*if (!class_exists($cls)) {
-				include 'Library/' . str_replace('_', '/', $cls) . '.php';
-			}*/
-			$column = new $cls($column, $options);
-		} else if ($column instanceof Column\AbstractColumn) {
 
-		} else {
+		if (is_string($column))
+			$column = ServiceManager::columnFactory($column, $type, $options);
+		else if ($column instanceof Column\AbstractColumn) {
 
 		}
+
 		$this->columns[$column->name] = $column;
 		return $this;
 	}
@@ -74,10 +78,10 @@ class Grid {
 	}
 
 	public function getColumn($name) {
-		return (isset($this->columns[$name]) ? $this->columns[$name] : null);
+		return ($this->columns[$name] ?? null);
 	}
 
-	public function getData() {
+	public function getData(): ?Data {
 		return $this->data;
 	}
 
@@ -96,7 +100,7 @@ class Grid {
 		return $this;
 	}
 
-	public function paginator($paginator = null) {
+	public function paginator($paginator = null): static {
 		$this->data->paginator($paginator);
 		return $this;
 	}
@@ -105,7 +109,7 @@ class Grid {
 		return $this->data->paginator;
 	}
 
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return $this->data->isEmpty();
 	}
 
