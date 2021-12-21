@@ -17,10 +17,7 @@ abstract class Enum {
 	 * @return array
 	 */
 	public static function constants(): array {
-		if (static::$constants)
-			return static::$constants;
-
-		return static::$constants = (new ReflectionClass(self::class))->getConstants();
+		return (new ReflectionClass(get_called_class()))->getConstants();
 	}
 
 	/**
@@ -111,7 +108,7 @@ abstract class Enum {
 	 * @return string
 	 */
 	public static function getName($value = null): string {
-		return str_replace(__NAMESPACE__ . '\\', '', get_called_class()) . (null === $value ? '' : '::' . static::getKey($value));
+		return get_called_class() . (null === $value ? '' : '::' . static::getKey($value));
 	}
 
 	/**
