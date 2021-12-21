@@ -2,6 +2,10 @@
 
 namespace Gsdk\Filesystem;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use File;
+
 class Filesystem {
 
 	const NESTING_LEVEL = 3;
