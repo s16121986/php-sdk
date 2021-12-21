@@ -18,7 +18,7 @@ class Filesystem {
 	public static function generateGuid(): string {
 		do {
 			$guid = md5(uniqid());
-		} while (FileModel::where('guid', $guid)->exists());
+		} while (Eloquent\Model::where('guid', $guid)->exists());
 
 		return $guid;
 	}

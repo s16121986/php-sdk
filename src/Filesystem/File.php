@@ -4,9 +4,8 @@ namespace Gsdk\Filesystem;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
-use Gsdk\Filesystem\Eloquent\Model;
 
-class File extends Model {
+class File extends Eloquent\Model {
 
 	protected $fullname;
 	protected $entity;
@@ -56,15 +55,15 @@ class File extends Model {
 	}
 
 	public static function findById($id) {
-		return static::findByQuery(Model::where('id', $id));
+		return static::findByQuery(Eloquent\Model::where('id', $id));
 	}
 
 	public static function findByGuid($guid) {
-		return static::findByQuery(Model::where('guid', $guid));
+		return static::findByQuery(Eloquent\Model::where('guid', $guid));
 	}
 
 	public static function findByEntity($entity) {
-		return static::findByQuery(Model::whereEntity($entity));
+		return static::findByQuery(Eloquent\Model::whereEntity($entity));
 	}
 
 	private static function findByQuery($query) {
