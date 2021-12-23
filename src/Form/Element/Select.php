@@ -27,9 +27,9 @@ class Select extends Xhtml {
 	];
 
 	private static function getValueId($value) {
-		if (is_string($value) && preg_match('/^\d+$/', $value)) {
+		if (is_string($value) && preg_match('/^\d+$/', $value))
 			$value = (int)$value;
-		}
+
 		return $value;
 	}
 
@@ -147,19 +147,18 @@ class Select extends Xhtml {
 		return $this;
 	}
 
-	public function valueExists($value) {
+	public function valueExists($value): bool {
 		return (bool)$this->getItem($value);
 	}
 
 	public function checkValue($value) {
-		if ($value === self::EMPTY_VALUE) {
+		if ($value === self::EMPTY_VALUE)
 			return true;
-		}
-		if ($this->multiple) {
-			return is_array($value) && !empty($value);
-		} else {
+
+		if ($this->multiple)
+			return is_iterable($value) && !empty($value);
+		else
 			return ($this->allowNotExists || $this->valueExists($value));
-		}
 	}
 
 	public function getValue() {
@@ -182,25 +181,29 @@ class Select extends Xhtml {
 	}
 
 	protected function prepareValue($value) {
-		if ($value === self::EMPTY_VALUE) {
+		if ($value === self::EMPTY_VALUE)
 			return $this->emptyValue;
-		}
+
 		if ($this->multiple) {
 			$valueTemp = $value;
 			$value = [];
-			if (is_array($valueTemp)) {
+			if (is_iterable($valueTemp)) {
 				foreach ($valueTemp as $val) {
+					if (is_object($val))
+						$val = $val->id;
+
 					if ($this->allowNotExists || $this->valueExists($val)) {
 						$value[] = self::getValueId($val);
 					}
 				}
 			}
-			if (empty($value)) {
+
+			if (empty($value))
 				return null;
-			}
-		} else {
+
+		} else
 			$value = self::getValueId($value);
-		}
+
 		return $value;
 	}
 
