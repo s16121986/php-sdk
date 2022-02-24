@@ -5,6 +5,7 @@ namespace Gsdk\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use File;
+use Exception;
 
 class Filesystem {
 
@@ -233,8 +234,11 @@ class Filesystem {
 
 	public static function makeDirectory($path, $mode) {
 		//$rootPath = File::storage()->path('');
-
-		mkdir($path, $mode, true);
+		try {
+			mkdir($path, $mode, true);
+		} catch (Exception $e) {
+			throw new Exception('Cant create folder "' . $path . '"', 0, $e);
+		}
 	}
 
 	public static function getPaths($guid): array {
