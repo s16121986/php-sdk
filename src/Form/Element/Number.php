@@ -11,7 +11,7 @@ class Number extends AbstractInput {
 		'nonnegative' => false
 	];
 
-	protected $attributes = ['min', 'max', 'readonly', 'step', 'autocomplete', 'list'];
+	protected $attributes = ['min', 'max', 'step', 'autocomplete', 'list', 'pattern', 'placeholder', 'readonly', 'required', 'size'];
 
 	public function checkValue($value) {
 		$pv = $this->prepareValue($value);
