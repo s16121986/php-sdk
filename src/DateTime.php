@@ -92,7 +92,7 @@ class DateTime extends BaseDateTime {
 		return new static($this, $timezone);
 	}
 
-	public function format($format): string {
+	public function format($format) {
 		return parent::format(self::getFormat($format) ?? $format);
 	}
 
