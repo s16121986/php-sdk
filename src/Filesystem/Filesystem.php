@@ -275,7 +275,7 @@ class Filesystem {
 				self::makeDirectory($path, 0770);
 		}
 
-		File::move(storage_path('app/tmp/' . $tempname), $storage->path($fullname));
+		File::move(storage_path('tmp/' . $tempname), $storage->path($fullname));
 		//$storage->move('/app/tmp/' . $tempname, $fullname);
 
 		if ($createdFlag) {
