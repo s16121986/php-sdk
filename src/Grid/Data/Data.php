@@ -5,6 +5,7 @@ namespace Gsdk\Grid\Data;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Paginator;
 
 class Data {
@@ -16,6 +17,12 @@ class Data {
 		'orderby' => null,
 		'sortorder' => 'asc'
 	];
+
+	private static function isQuery($data): bool {
+		return $data instanceof Builder
+			|| $data instanceof QueryBuilder
+			|| $data instanceof Relation;
+	}
 
 	public function __construct($data = null) {
 		$this->set($data);
@@ -73,7 +80,7 @@ class Data {
 		$data = $this->dataEntity;
 		if (empty($data))
 			return null;
-		else if ($data instanceof Builder || $data instanceof QueryBuilder)
+		else if (self::isQuery($data))
 			return $this->data = $this->getQueryData($data);
 		else if (is_iterable($data))
 			$this->data = $data;
