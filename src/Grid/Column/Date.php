@@ -2,7 +2,8 @@
 
 namespace Gsdk\Grid\Column;
 
-use Gsdk\DateTime;
+use DateTime;
+use Carbon\Carbon;
 
 class Date extends AbstractColumn {
 
@@ -11,7 +12,9 @@ class Date extends AbstractColumn {
 	];
 
 	public function formatValue($value, $row = null) {
-		if (is_string($value)) {
+		if ($value instanceof DateTime) {
+
+		} else if (is_string($value)) {
 			if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value))
 				$value = new \DateTime($value);
 			else
