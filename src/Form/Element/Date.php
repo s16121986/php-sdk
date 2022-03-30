@@ -3,6 +3,7 @@
 namespace Gsdk\Form\Element;
 
 use DateTime;
+use Illuminate\Support\DateFactory;
 
 class Date extends AbstractInput {
 
@@ -22,12 +23,11 @@ class Date extends AbstractInput {
 			return null;
 
 		if ($value instanceof DateTime)
-			$date = $value;
+			$date = DateFactory::createFromTimestamp($value->getTimestamp());
 		else if (is_numeric($value)) {
-			$date = new DateTime();
-			$date->setTimestamp($value);
+			$date = DateFactory::createFromTimestamp($value);
 		} else if (is_string($value))
-			$date = new DateTime($value);
+			$date = DateFactory::parse($value);
 		else
 			return null;
 
@@ -44,7 +44,7 @@ class Date extends AbstractInput {
 	public function getHtml(): string {
 		$date = $this->getValue();
 
-		return '<input type="' . $this->inputType . '"' . $this->attributes . ' value="' . ($date ? $date->format('Y-m-d') : '') . '" />';
+		return '<input type="' . $this->inputType . '"' . $this->attributes . ' value="' . ($date ? $date->format($this->format) : '') . '" />';
 	}
 
 }
