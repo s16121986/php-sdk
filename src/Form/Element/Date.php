@@ -3,6 +3,7 @@
 namespace Gsdk\Form\Element;
 
 use DateTime;
+use Illuminate\Support\Facades\Date as DateFacade;
 use Illuminate\Support\DateFactory;
 
 class Date extends AbstractInput {
@@ -22,14 +23,7 @@ class Date extends AbstractInput {
 		if (empty($value))
 			return null;
 
-		if ($value instanceof DateTime)
-			$date = DateFactory::createFromTimestamp($value->getTimestamp());
-		else if (is_numeric($value)) {
-			$date = DateFactory::createFromTimestamp($value);
-		} else if (is_string($value))
-			$date = DateFactory::parse($value);
-		else
-			return null;
+		$date = new DateFacade($value);
 
 		$Ymd = $date->format('Y-m-d');
 		if ($this->max && ($Ymd > $this->max))
