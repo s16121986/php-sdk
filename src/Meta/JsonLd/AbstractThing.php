@@ -9,11 +9,14 @@ abstract class AbstractThing {
 	protected $type;
 	protected $data = [];
 
-	public function __construct(array $data = []) {
+	public function __construct($data = null) {
 		$this->type = str_replace(__NAMESPACE__ . '\\', '', get_class($this));
 		$this->init();
-		foreach ($data as $k => $v)
-			$this->$k = $v;
+
+		if (is_array($data))
+			foreach ($data as $k => $v) {
+				$this->$k = $v;
+			}
 	}
 
 	public function __call(string $name, array $arguments) {
