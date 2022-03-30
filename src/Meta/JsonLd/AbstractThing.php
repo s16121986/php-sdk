@@ -16,6 +16,11 @@ abstract class AbstractThing {
 			$this->$k = $v;
 	}
 
+	public function __call(string $name, array $arguments) {
+		$this->data[$name] = $arguments[0];
+		return $this;
+	}
+
 	public function __set($name, $value) {
 		$this->data[$name] = $value;
 	}

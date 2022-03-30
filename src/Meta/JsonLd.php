@@ -7,25 +7,29 @@ class JsonLd {
 	private $items = [];
 
 	public function __get($name) {
-		return isset($this->items[$name]) ? $this->items[$name] : null;
+		return $this->items[$name] ?? null;
 	}
 
-	public function addThing($type, array $data = []) {
+	public function addThing($type, $data = null) {
 		$cls = __NAMESPACE__ . '\JsonLd\\' . $type;
 		$item = new $cls($data);
 		$this->items[strtolower($type)] = $item;
-		return $this;
+		return $item;
 	}
 
-	public function addOrganization(array $data) {
+	public function addOrganization($data = null) {
 		return $this->addThing('Organization', $data);
 	}
 
-	public function addBreadcrumbs(array $data) {
+	public function addArticle($data = null) {
+		return $this->addThing('Article', $data);
+	}
+
+	public function addBreadcrumbs($data = null) {
 		return $this->addThing('BreadcrumbList', $data);
 	}
 
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = [];
 		foreach ($this->items as $item) {
 			$s = $item->getHtml();
