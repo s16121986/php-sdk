@@ -53,8 +53,8 @@ class Model extends BaseModel {
 		$builder->addSelect(DB::raw('(SELECT guid FROM s_files'
 			. ' WHERE entity_id=`' . $entity->getTable() . '`.id'
 			. ' AND entity_type="' . addslashes(get_class($entity)) . '"'
-			. ' AND type="' . addslashes($fileClass) . '") as `' . $columnName . '`'
-			. ' LIMIT 1'));
+			. ' AND type="' . addslashes($fileClass) . '"'
+			. ' LIMIT 1) as `' . $columnName . '`'));
 	}
 
 }
