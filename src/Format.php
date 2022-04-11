@@ -2,6 +2,9 @@
 
 namespace Gsdk;
 
+use DateTime;
+use Illuminate\Support\DateFactory;
+
 abstract class Format {
 
 	const S = ';';
@@ -117,7 +120,17 @@ abstract class Format {
 	}
 
 	public static function date($date, $format = null): string {
-		return (new DateTime($date))->format(self::getDefault($format, self::DATE_FORMAT));
+		$factory = new DateFactory();
+		if ($date instanceof DateTime)
+			$date = $factory->createFromTimestamp($date->getTimestamp());
+		else if (is_numeric($date)) {
+			$date = $factory->createFromTimestamp($date);
+		} else if (is_string($date))
+			$date = $factory->parse($date);
+		else
+			return '';
+
+		return $date->format(self::getDefault($format, self::DATE_FORMAT));
 	}
 
 	public static function time($time, $format = self::TIME_FORMAT): string {
