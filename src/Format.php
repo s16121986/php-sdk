@@ -134,11 +134,11 @@ abstract class Format {
 	}
 
 	public static function time($time, $format = self::TIME_FORMAT): string {
-		return (new DateTime($time))->format(self::getDefault($format, self::TIME_FORMAT));
+		return self::date($time, self::getDefault($format, self::TIME_FORMAT));
 	}
 
 	public static function datetime($date, $format = null): string {
-		return (new DateTime($date))->format(self::getDefault($format, self::DATETIME_FORMAT));
+		return self::date($date, self::getDefault($format, self::DATETIME_FORMAT));
 	}
 
 	public static function number($number, $format = null) {
