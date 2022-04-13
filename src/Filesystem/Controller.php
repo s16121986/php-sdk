@@ -85,6 +85,16 @@ class Controller extends BaseController {
 		return $response;
 	}
 
+	protected function renderNotFoundImage($destination) {
+		$response = Response::make(file_get_contents($destination));
+		$response->headers->add([
+			'Content-Type' => Storage::mimeType($destination),
+			'Cache-Control' => 'public'
+		]);
+
+		return $response;
+	}
+
 	/**
 	 * Store a new user.
 	 *
@@ -95,7 +105,7 @@ class Controller extends BaseController {
 		$file = File::findByGuid($guid);
 
 		if (!$file || !$file->exists())
-			$this->sendMissingFileResponse($request, $file);
+			return $this->sendMissingFileResponse($request, $file);
 
 		if ($this->notModified($request, $file, $request->input()))
 			return Response::make()->setNotModified();
