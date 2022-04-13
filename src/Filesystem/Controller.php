@@ -88,7 +88,7 @@ class Controller extends BaseController {
 	protected function renderNotFoundImage($destination) {
 		$response = Response::make(file_get_contents($destination));
 		$response->headers->add([
-			'Content-Type' => Storage::mimeType($destination),
+			'Content-Type' => \File::mimeType($destination),
 			'Cache-Control' => 'public'
 		]);
 
