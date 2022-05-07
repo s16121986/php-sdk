@@ -68,7 +68,7 @@ class File extends AbstractInput {
 			}
 			$html .= '<br />';
 		}
-		$html .= '<input type="file"' . $this->attrToString() . ' />';
+		$html .= '<input type="file"' . $this->attributes . ' />';
 		$html .= '</div>';
 		return $html;
 	}

@@ -46,7 +46,8 @@ abstract class Element {
 	}
 
 	public function __call(string $name, array $arguments) {
-		return $this->setOption($name, $arguments[0]);
+		if (isset($arguments[0]))
+			return $this->setOption($name, $arguments[0]);
 	}
 
 	public function setOptions($options) {
