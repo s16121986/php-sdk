@@ -186,6 +186,8 @@ class Head {
 		if ($this->baseHref)
 			$html .= $this->baseHref->getHtml() . "\n";
 
+		$html .= implode('', $this->contents);
+
 		$html .= '</head>';
 
 		return $html;
