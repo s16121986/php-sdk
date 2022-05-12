@@ -2,8 +2,9 @@
 
 namespace Gsdk;
 
-use DateTime;
 use Illuminate\Support\DateFactory;
+use DateTimeZone;
+use DateTime;
 
 abstract class Format {
 
@@ -57,6 +58,23 @@ abstract class Format {
 	const DATETIME_FORMAT = 'datetime';
 
 	private static array $default = [];
+
+	protected static function dateFactory($date) {
+		$factory = new DateFactory();
+		if ($date instanceof DateTime)
+			return $factory->createFromTimestamp($date->getTimestamp());
+
+		else if (is_numeric($date)) {
+			$date = $factory->createFromTimestamp($date);
+		} else if (is_string($date))
+			$date = $factory->parse($date);
+		else
+			return null;
+
+		$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
+
+		return $date;
+	}
 
 	protected static function parseFormat($format, $elements): array {
 		if (is_string($format)) {
@@ -120,17 +138,9 @@ abstract class Format {
 	}
 
 	public static function date($date, $format = null): string {
-		$factory = new DateFactory();
-		if ($date instanceof DateTime)
-			$date = $factory->createFromTimestamp($date->getTimestamp());
-		else if (is_numeric($date)) {
-			$date = $factory->createFromTimestamp($date);
-		} else if (is_string($date))
-			$date = $factory->parse($date);
-		else
-			return '';
+		$date = static::dateFactory($date);
 
-		return $date->format(self::getDefault($format, self::DATE_FORMAT));
+		return $date ? $date->format(self::getDefault($format, self::DATE_FORMAT)) : '';
 	}
 
 	public static function time($time, $format = self::TIME_FORMAT): string {
