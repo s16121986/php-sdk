@@ -101,20 +101,25 @@ class Controller extends BaseController {
 	 * @param \Illuminate\Http\Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function file(Request $request, $guid) {
+	public function file(Request $request, $guid, $part = null) {
+		$storage = File::storage();
 		$file = File::findByGuid($guid);
+		$filename = $file->fullname . ($part ? '_' . $part : '');
 
-		if (!$file || !$file->exists())
+		if (!$file || !$storage->exists($filename))
 			return $this->sendMissingFileResponse($request, $file);
 
 		if ($this->notModified($request, $file, $request->input()))
 			return Response::make()->setNotModified();
 
-		return $this->render($file, $request->input());
+		$response = Response::make($storage->get($filename));
+		$response->headers->add($this->responseHeaders($file, $request->input()));
+
+		return $response;
 	}
 
-	public function image(Request $request, $guid) {
-		return $this->file($request, $guid);
+	public function image(Request $request, $guid, $part = null) {
+		return $this->file($request, $guid, $part);
 	}
 
 	public function uploads(Request $request, $path) {
