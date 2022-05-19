@@ -104,9 +104,12 @@ class Controller extends BaseController {
 	public function file(Request $request, $guid, $part = null) {
 		$storage = File::storage();
 		$file = File::findByGuid($guid);
+		if (!$file)
+			return $this->sendMissingFileResponse($request);
+
 		$filename = $file->fullname . ($part ? '_' . $part : '');
 
-		if (!$file || !$storage->exists($filename))
+		if (!$storage->exists($filename))
 			return $this->sendMissingFileResponse($request, $file);
 
 		if ($this->notModified($request, $file, $request->input()))
