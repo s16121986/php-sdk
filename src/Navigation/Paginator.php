@@ -23,7 +23,10 @@ class Paginator {
 	protected $query;
 
 	public function __get($name) {
-		return ($this->options[$name] ?? null);
+		return match ($name) {
+			'offset' => $this->getStartIndex(),
+			default => ($this->options[$name] ?? null),
+		};
 	}
 
 	public function __set($name, $value) {
@@ -168,6 +171,10 @@ class Paginator {
 			'pages' => $pages,
 			'paginator' => $this
 		]);
+	}
+
+	public function __toString(): string {
+		return (string)$this->render();
 	}
 
 }
