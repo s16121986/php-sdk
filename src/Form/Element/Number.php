@@ -7,6 +7,7 @@ class Number extends AbstractInput {
 	protected $options = [
 		'inputType' => 'number',
 		'allowZero' => true,
+		'nullToZero' => false,
 		'fractionDigits' => 0,
 		'nonnegative' => false
 	];
@@ -29,7 +30,7 @@ class Number extends AbstractInput {
 
 	protected function prepareValue($value) {
 		if (self::isNullValue($value))
-			return null;
+			return $this->nullToZero ? 0 : null;
 
 		if (is_string($value))
 			$value = str_replace([',', ' '], '', $value);
