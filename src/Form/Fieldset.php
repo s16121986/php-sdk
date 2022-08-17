@@ -100,6 +100,10 @@ class Fieldset {
 		return null;
 	}
 
+	public function hasElement($name): bool {
+		return isset($this->elements[$name]);
+	}
+
 	public function addElement($element, $type = null, array $options = []) {
 		if (!is_array($options))
 			$options = [];
