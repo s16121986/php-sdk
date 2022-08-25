@@ -57,3 +57,21 @@ function getNumberDeclension($number, $variants) {
 	}
 	return (isset($variants[$i]) ? $variants[$i] : null);
 }
+
+function float_round($number, $precision = null): float|int {
+	if ($number == 0)
+		return 0;
+
+	$i = 0;
+
+	while (true) {
+		$r = round($number, $i);
+		if ($r != 0)
+			return $r;
+
+		if ($precision !== null && $i >= $precision)
+			return 0;
+
+		$i++;
+	}
+}
