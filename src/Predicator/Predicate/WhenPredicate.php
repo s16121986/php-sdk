@@ -8,7 +8,7 @@ class WhenPredicate {
 
 	protected array $options = [];
 
-	public function __construct(string $callback, array $options = []) {
+	public function __construct($callback, array $options = []) {
 		$this->callback = $callback;
 		$this->options = $options;
 	}
