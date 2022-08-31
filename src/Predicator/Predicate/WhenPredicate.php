@@ -4,7 +4,7 @@ namespace Gsdk\Predicator\Predicate;
 
 class WhenPredicate {
 
-	protected string $callback;
+	protected $callback;
 
 	protected array $options = [];
 
@@ -14,7 +14,7 @@ class WhenPredicate {
 	}
 
 	public function query($query, $value) {
-		$this->callback($value);
+		call_user_func($this->callback, $query, $value);
 	}
 
 }

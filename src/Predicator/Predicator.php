@@ -94,7 +94,7 @@ class Predicator {
 			$orderParam = $this->getParam('order');
 			$s = explode(' ', $orderParam);
 			$query->orderBy($s[0], $s[1] ?? 'asc');
-		} else if (!$this->hasParam('orderby'))
+		} else if ($this->hasParam('orderby'))
 			$query->orderBy($this->getParam('orderby'), $this->getParam('sortorder') ?? 'asc');
 	}
 
