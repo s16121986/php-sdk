@@ -319,6 +319,9 @@ class Filesystem {
 	}
 
 	public static function saveFileFromUpload($file, UploadedFile $uploadFile) {
+		if (!$uploadFile->isValid())
+			throw new Exception('Uploaded file invalid');
+
 		return self::saveFileContent($file, $uploadFile->get(), ['name' => $uploadFile->getClientOriginalName()]);
 	}
 
