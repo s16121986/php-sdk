@@ -5,7 +5,8 @@ namespace Gsdk\Form\Element;
 class Textarea extends Xhtml {
 
 	protected $options = [
-		'stripTags' => true
+		'stripTags' => false,
+		'unsafe' => true
 	];
 
 	protected $attributes = ['placeholder', 'maxlength', 'required', 'autofocus', 'readonly'];
@@ -17,7 +18,10 @@ class Textarea extends Xhtml {
 			return '';
 
 		if ($this->stripTags)
-			$value = htmlspecialchars($value, ENT_NOQUOTES);
+			$value = strip_tags($value);
+
+		if ($this->unsafe)
+			$value = filter_var($value, FILTER_UNSAFE_RAW);
 
 		return trim($value);
 	}
