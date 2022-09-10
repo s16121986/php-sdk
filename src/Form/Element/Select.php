@@ -260,18 +260,16 @@ class Select extends Xhtml {
 		return '';
 	}
 
-	public function isSelected($value) {
+	public function isSelected($value): bool {
 		$value = self::getValueId($value);
-		if ($this->multiple) {
-			if (is_array($this->value))
-				foreach ($this->value as $val) {
-					if ($val == $value)
-						return true;
-				}
-		} else {
-			return ($this->value === $value);
-		}
-		return false;
+		$selected = $this->getValue();
+		if (!$this->multiple)
+			return ($value === $selected);
+
+		if (!is_array($selected))
+			return false;
+
+		return in_array($value, $selected);
 	}
 
 	public function getInputName() {

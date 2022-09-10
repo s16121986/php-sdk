@@ -22,7 +22,7 @@ class Radio extends Xhtml {
 	}
 
 	public function isEmpty(): bool {
-		return (null === $this->value);
+		return (null === $this->getValue());
 	}
 
 	public function getItems() {
@@ -61,17 +61,17 @@ class Radio extends Xhtml {
 	}
 
 	public function getValuePresentation() {
+		$selected = $this->getValue();
 		foreach ($this->getItems() as $item) {
-			if ($item->value == $this->value) {
+			if ($item->value == $selected)
 				return $item->getPresentation();
-			}
 		}
 		return '';
 	}
 
-	public function isSelected($value) {
+	public function isSelected($value): bool {
 		$value = self::getValueId($value);
-		return ($this->value === $value);
+		return ($this->getValue() === $value);
 	}
 
 	public function getHtml(): string {

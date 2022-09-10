@@ -15,10 +15,7 @@ class Birthday extends Xhtml {
 	private $days;
 
 	public function __get($name) {
-		if (isset($this->value[$name])) {
-			return $this->value[$name];
-		}
-		return parent::__get($name);
+		return $this->value[$name] ?? parent::__get($name);
 	}
 
 	private function getHtmlItem($key, $items) {

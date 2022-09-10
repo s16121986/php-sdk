@@ -20,13 +20,13 @@ class Daterange extends Date {
 
 		$dates = explode(self::delimiter, $value);
 		return [
-			'valueFrom' => $dates[0] ? new DateTime($dates[0]) : null,
-			'valueTo' => (isset($dates[1]) && $dates[1]) ? new DateTime($dates[1]) : null
+			'valueFrom' => $dates[0] ? new DateTime($dates[0] . ' 00:00:00') : null,
+			'valueTo' => (isset($dates[1]) && $dates[1]) ? new DateTime($dates[1] . ' 23:59:59') : null
 		];
 	}
 
 	public function isEmpty(): bool {
-		return empty($this->value) || !($this->value['valueFrom'] || $this->value['valueTo']);
+		return parent::isEmpty() || !($this->value['valueFrom'] || $this->value['valueTo']);
 	}
 
 	public function getHtml(): string {

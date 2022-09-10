@@ -24,8 +24,8 @@ class Checkbox extends AbstractInput {
 		return $this;
 	}
 
-	public function isValid() {
-		return (!$this->required || null !== $this->value);
+	public function isValid(): bool {
+		return (!$this->required || !$this->isEmpty());
 	}
 
 	public function getValue() {
@@ -54,7 +54,7 @@ class Checkbox extends AbstractInput {
 		return $this;
 	}
 
-	public function isChecked() {
+	public function isChecked(): bool {
 		return ($this->getValue() == $this->checkedValue);
 	}
 

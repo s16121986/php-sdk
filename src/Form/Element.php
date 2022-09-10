@@ -71,20 +71,13 @@ abstract class Element {
 	}
 
 	public function getOption($name) {
-		switch ($name) {
-			case 'value':
-				return $this->getValue();
-			case 'id':
-				return $this->getId();
-			case 'inputName':
-				return $this->getInputName();
-		}
+		return match ($name) {
+			'value' => $this->getValue(),
+			'id' => $this->getId(),
+			'inputName' => $this->getInputName(),
+			default => $this->options[$name] ?? null,
+		};
 
-		if (isset($this->options[$name]))
-			return $this->options[$name];
-
-		//if (isset(self::$_default[$name])) return self::$_default[$name];
-		return null;
 	}
 
 	public function setOption($key, $option) {
@@ -184,9 +177,6 @@ abstract class Element {
 	}
 
 	public function getValue() {
-		if (null === $this->value && null !== $this->default) {
-			//return $this->default;
-		}
 		return $this->value;
 	}
 
@@ -236,10 +226,10 @@ abstract class Element {
 	}
 
 	public function isEmpty(): bool {
-		return empty($this->value);
+		return empty($this->getValue());
 	}
 
-	public function isValid() {
+	public function isValid(): bool {
 		if ($this->error || ($this->required && !$this->disabled && $this->isEmpty()))
 			return false;
 
@@ -279,7 +269,24 @@ abstract class Element {
 	}
 
 	protected function prepareValue($value) {
-		return $value;
+		switch ($this->getOption('cast')) {
+			case 'int':
+			case 'integer':
+				return (int)$value;
+			case 'string':
+				return (string)$value;
+			case 'bool':
+			case 'boolean':
+				return (bool)$value;
+			case 'real':
+			case 'float':
+			case 'double':
+				return $this->fromFloat($value);
+			case 'decimal':
+				return number_format($value, explode(':', $this->options['cast'], 2)[1], '.', '');
+			default:
+				return $value;
+		}
 	}
 
 	protected function init() { }
@@ -296,6 +303,15 @@ abstract class Element {
 			return str_replace(',', '.', $val);
 
 		return str_replace('"', '&quot;', $val);
+	}
+
+	public function fromFloat($value): float {
+		return match ((string)$value) {
+			'Infinity' => INF,
+			'-Infinity' => -INF,
+			'NaN' => NAN,
+			default => (float)$value,
+		};
 	}
 
 }

@@ -39,7 +39,7 @@ class Number extends AbstractInput {
 	}
 
 	public function isEmpty(): bool {
-		return (0 !== $this->value && empty($this->value));
+		return (0 !== $this->getValue() && parent::isEmpty());
 	}
 
 	private static function isNullValue($value) {
