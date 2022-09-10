@@ -269,6 +269,9 @@ abstract class Element {
 	}
 
 	protected function prepareValue($value) {
+		if (is_null($value))
+			return null;
+
 		switch ($this->getOption('cast')) {
 			case 'int':
 			case 'integer':
