@@ -73,7 +73,10 @@ class Attributes {
 			case 'tabindex':
 				return (int)$value;
 			case 'autocomplete':
-				return ($value && $value !== 'off') ? 'on' : 'off';
+				if (is_string($value))
+					return $value;
+				else
+					return $value ? 'on' : 'off';
 			case 'inputmode':
 				static $values = ['none', 'text', 'tel', 'url', 'email', 'numeric', 'decimal', 'search'];
 				return in_array($value, $values) ? $value : null;
