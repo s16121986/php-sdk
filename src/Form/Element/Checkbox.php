@@ -13,10 +13,14 @@ class Checkbox extends AbstractInput {
 	public function setOptions($options) {
 		parent::setOptions($options);
 
-		$curValue = $this->getValue();
-		$test = [$this->checkedValue, $this->uncheckedValue];
-		if (!in_array($curValue, $test))
-			$this->setValue($curValue);
+		if (isset($options['checked']))
+			$this->setChecked((bool)$options['checked']);
+		else {
+			$curValue = $this->getValue();
+			$test = [$this->checkedValue, $this->uncheckedValue];
+			if (!in_array($curValue, $test))
+				$this->setValue($curValue);
+		}
 
 		return $this;
 	}
