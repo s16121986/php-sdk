@@ -40,7 +40,9 @@ class Submit {
 					if (isset($sentData[$element->name]))
 						$element->setData($sentData[$element->name]);
 
-				} else if ($element->isSubmittable() && array_key_exists($element->name, $sentData))
+				} else if ($element->isSubmittable())
+					// && array_key_exists($element->name, $sentData)
+					// checkbox fields need to set null value
 					$element->setValue(self::getElementValue($sentData, $element));
 
 				if ($return && !$element->isValid())

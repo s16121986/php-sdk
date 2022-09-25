@@ -18,7 +18,6 @@ class Checkbox extends AbstractInput {
 		if (!in_array($curValue, $test))
 			$this->setValue($curValue);
 
-
 		return $this;
 	}
 
