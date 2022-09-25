@@ -4,8 +4,6 @@ namespace Gsdk\Form\Element;
 
 class Checkbox extends AbstractInput {
 
-	protected $checked = false;
-
 	protected $options = [
 		'checkedValue' => 1,
 		'uncheckedValue' => 0
@@ -25,7 +23,7 @@ class Checkbox extends AbstractInput {
 	}
 
 	public function isValid(): bool {
-		return (!$this->required || !$this->isEmpty());
+		return (!$this->required || $this->isChecked());
 	}
 
 	public function getValue() {
@@ -34,24 +32,16 @@ class Checkbox extends AbstractInput {
 	}
 
 	public function setValue($value) {
-		if ($value == $this->checkedValue) {
+		if ($value == $this->checkedValue)
 			parent::setValue($this->checkedValue);
-			$this->checked = true;
-		} else {
+		else
 			parent::setValue($this->uncheckedValue);
-			$this->checked = false;
-		}
+
 		return $this;
 	}
 
-	public function setChecked($flag) {
-		$this->checked = (bool)$flag;
-		if ($this->checked)
-			$this->setValue($this->checkedValue);
-		else
-			$this->setValue($this->uncheckedValue);
-
-		return $this;
+	public function setChecked($flag): static {
+		return $this->setValue($flag ? $this->checkedValue : $this->uncheckedValue);
 	}
 
 	public function isChecked(): bool {
