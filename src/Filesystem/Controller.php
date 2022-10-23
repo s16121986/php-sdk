@@ -133,7 +133,7 @@ class Controller extends BaseController {
 
 		$response = Response::make(file_get_contents($filename));
 		$response->headers->add([
-			'Content-Type' => $storage->getMimeType($path)
+			'Content-Type' => $storage->mimeType($path)
 		]);
 
 		return $response;
