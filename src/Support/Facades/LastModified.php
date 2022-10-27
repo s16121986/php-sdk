@@ -1,6 +1,6 @@
 <?php
 
-namespace Gsdk\Support\Facades\Facades;
+namespace Gsdk\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
