@@ -46,7 +46,7 @@ abstract class AbstractMeta {
 				$s .= ' ' . $k . '="' . $v . '"';
 			}
 		}
-		$s .= ($close ? '></' . $tag . '>' : ' />');
+		$s .= ($close ? '></' . $tag . '>' : '>');
 		return $s;
 	}
 
