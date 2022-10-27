@@ -48,7 +48,7 @@ class Datetime extends Text {
 				$d = Format::formatDate($t);
 		}
 
-		return '<input type="' . $this->inputType . '"' . $this->attrToString() . ' value="' . $d . '" />';
+		return '<input type="' . $this->inputType . '"' . $this->attrToString() . ' value="' . $d . '">';
 	}
 
 }

@@ -15,7 +15,7 @@ abstract class AbstractInput extends Xhtml {
 	public function getHtml(): string {
 		return '<input type="' . $this->inputType . '"'
 			. $this->attributes
-			. ' value="' . self::escape($this->getValue()) . '" />'
+			. ' value="' . self::escape($this->getValue()) . '">'
 			. $this->attributes->getHtml();
 	}
 

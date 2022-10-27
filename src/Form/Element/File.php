@@ -63,12 +63,12 @@ class File extends AbstractInput {
 				if ($this->deleteUrl) {
 					$html .= '<a href="' . str_replace('%id%', $file->id, $this->deleteUrl) . '" class="button-delete"></a>';
 				}
-				$html .= '<input type="hidden" name="' . $this->getOriginalInputName() . '[' . $file->id . '][index][]" value="1" />';
+				$html .= '<input type="hidden" name="' . $this->getOriginalInputName() . '[' . $file->id . '][index][]" value="1">';
 				$html .= '</div>';
 			}
-			$html .= '<br />';
+			$html .= '<br>';
 		}
-		$html .= '<input type="file"' . $this->attributes . ' />';
+		$html .= '<input type="file"' . $this->attributes . '>';
 		$html .= '</div>';
 		return $html;
 	}

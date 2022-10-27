@@ -52,7 +52,7 @@ class Checkbox extends AbstractInput {
 	}
 
 	public function getHtml(): string {
-		return '<input type="checkbox"' . $this->attributes . ' value="' . $this->checkedValue . '"' . ($this->isChecked() ? ' checked="checked"' : '') . ' />';
+		return '<input type="checkbox"' . $this->attributes . ' value="' . $this->checkedValue . '"' . ($this->isChecked() ? ' checked="checked"' : '') . '>';
 	}
 
 }

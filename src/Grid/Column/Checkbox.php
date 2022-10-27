@@ -5,7 +5,7 @@ namespace Gsdk\Grid\Column;
 class Checkbox extends AbstractColumn {
 
 	protected array $options = [
-		'text' => '<input type="checkbox" />',
+		'text' => '<input type="checkbox">',
 		'valueIndex' => 'id',
 		'inputValue' => '%id%',
 		'inputName' => '',
@@ -21,7 +21,7 @@ class Checkbox extends AbstractColumn {
 		} else {
 			$checked = (bool)$value;
 		}
-		$template = '<input type="checkbox" name="' . $this->inputName . '"' . ($checked ? ' checked="checked"' : '') . ' value="' . $inputValue . '" />';
+		$template = '<input type="checkbox" name="' . $this->inputName . '"' . ($checked ? ' checked="checked"' : '') . ' value="' . $inputValue . '">';
 		//$row['value'] = $value;
 		return \Format::formatTemplate($template, $row);
 	}

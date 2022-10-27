@@ -45,7 +45,7 @@ class Date extends AbstractInput {
 	public function getHtml(): string {
 		$date = $this->getValue();
 
-		return '<input type="' . $this->inputType . '"' . $this->attributes . ' value="' . ($date ? $date->format('Y-m-d') : '') . '" />';
+		return '<input type="' . $this->inputType . '"' . $this->attributes . ' value="' . ($date ? $date->format('Y-m-d') : '') . '">';
 	}
 
 }

@@ -41,7 +41,7 @@ class Tag extends AbstractXml {
 		}
 		
 		if (null === $this->value)
-			$s .= ' />';
+			$s .= '>';
 		else
 			$s .= '>' . self::escape($this->value) . '</' . $this->tag . '>';
 		

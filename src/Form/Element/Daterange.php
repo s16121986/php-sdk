@@ -41,7 +41,7 @@ class Daterange extends Date {
 		}
 
 		return '<input type="' . $this->inputType . '"'
-			. $this->attributes . ' value="' . $d . '" />'
+			. $this->attributes . ' value="' . $d . '">'
 			. $this->attributes->getHtml();
 	}
 

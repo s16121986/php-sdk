@@ -14,7 +14,7 @@ class Password extends AbstractInput {
 	}
 
 	public function getHtml(): string {
-		return '<input type="' . $this->inputType . '"' . $this->attributes . ' />';
+		return '<input type="' . $this->inputType . '"' . $this->attributes . '>';
 	}
 
 }
