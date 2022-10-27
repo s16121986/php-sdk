@@ -1,6 +1,6 @@
 <?php
 
-namespace Abordage\LastModified;
+namespace Gsdk\Http\LastModified;
 
 use Illuminate\Support\Carbon;
 
