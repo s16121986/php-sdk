@@ -5,7 +5,7 @@ namespace Gsdk\Meta\Head;
 class Script extends AbstractMeta {
 
 	protected $attributes = [
-		'type' => 'text/javascript',
+		//'type' => 'text/javascript',
 		'async' => false,
 		'defer' => false
 	];
