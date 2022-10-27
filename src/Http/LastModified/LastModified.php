@@ -2,17 +2,15 @@
 
 namespace Gsdk\Http\LastModified;
 
-use Illuminate\Support\Carbon;
-
 class LastModified {
 
-	private ?Carbon $updatedAt = null;
+	private ?\DateTime $updatedAt = null;
 
-	public function set(?Carbon $updatedAt): void {
+	public function set(?\DateTime $updatedAt): void {
 		$this->updatedAt = $updatedAt;
 	}
 
-	public function get(): ?Carbon {
+	public function get(): ?\DateTime {
 		return $this->updatedAt;
 	}
 

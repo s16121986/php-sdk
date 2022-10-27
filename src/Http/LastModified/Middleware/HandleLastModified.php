@@ -4,6 +4,7 @@ namespace Gsdk\Http\LastModified\Middleware;
 
 use Gsdk\Support\Facades\LastModified;
 use Illuminate\Support\Carbon;
+use Illuminate\Http\Response;
 use Closure;
 
 class HandleLastModified {
@@ -18,17 +19,21 @@ class HandleLastModified {
 			return $response;
 
 		if ($response instanceof Response)
-			$response->header('Last-Modified', $lastModifiedAt->toRfc7231String());
+			$response->header('Last-Modified', static::dateFormat($lastModifiedAt));
 
 		$requestDateTimeString = request()->header('If-Modified-Since');
 		if (!is_string($requestDateTimeString))
 			return $response;
 
 		$modifiedSince = Carbon::createFromTimeString($requestDateTimeString, 'GMT');
-		if ($lastModifiedAt->lessThanOrEqualTo($modifiedSince))
+		if ($lastModifiedAt->getTimestamp() < $modifiedSince->getTimestamp())
 			abort(304);
 
 		return $response;
+	}
+
+	private static function dateFormat($date) {
+		return $date->format(DATE_RFC7231);
 	}
 
 }
