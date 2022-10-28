@@ -2,7 +2,7 @@
 
 namespace Gsdk\Services;
 
-abstract class IniReader {
+class IniReader {
 
 	private $fullname;
 
