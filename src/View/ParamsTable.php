@@ -150,7 +150,7 @@ class ParamsTable {
 		return $param->emptyText ?? null;
 	}
 
-	protected function prepareText($value, $param): string {
+	protected function prepareText($value, $param): ?string {
 		if (empty($value))
 			return $this->prepareEmpty($param);
 
