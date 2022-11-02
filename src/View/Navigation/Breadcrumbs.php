@@ -6,8 +6,6 @@ use stdClass;
 
 class Breadcrumbs {
 
-	protected static array $itemAttributes = ['id', 'class', 'title', 'target'];
-
 	protected array $items = [];
 
 	protected $homeItem;
@@ -30,6 +28,9 @@ class Breadcrumbs {
 	}
 
 	public function add($params): static {
+		if (is_string($params))
+			$params = ['text' => $params];
+
 		$this->items[] = $this->itemFactory($params);
 		return $this;
 	}
@@ -86,10 +87,10 @@ class Breadcrumbs {
 
 	protected function itemFactory($params): stdClass {
 		$item = new stdClass();
-		foreach (static::$itemAttributes as $k) {
-			$item->$k = $params[$k] ?? null;
-		}
-		$item->url = $params['href'] ?? $params['url'] ?? '#';
+		$item->id = $params['id'] ?? null;
+		$item->title = $params['title'] ?? null;
+		$item->target = $params['target'] ?? null;
+		$item->href = $params['href'] ?? $params['url'] ?? null;
 		$item->text = $params['text'] ?? '';
 		$item->class = $params['class'] ?? $params['cls'] ?? null;
 
@@ -110,15 +111,15 @@ class Breadcrumbs {
 	}
 
 	protected function renderItem($item): string {
-		$html = '<a href="' . $item->url . '"';
-		foreach (static::$itemAttributes as $k) {
-			if ($item->$k)
-				$html .= ' ' . $k . '="' . $item->$k . '"';
-		}
-
+		$tag = $item->href ? 'a' : 'div';
+		$html = '<' . $tag;
+		$attributes = ['id', 'title', 'target', 'href', 'class'];
+		$html .= array_reduce($attributes, function ($s, $k) use ($item) {
+			return $s . ($item->$k ? ' ' . $k . '="' . $item->$k . '"' : '');
+		}, '');
 		$html .= '>';
 		$html .= $item->text;
-		$html .= '</a>';
+		$html .= '</' . $tag . '>';
 
 		return $html;
 	}
