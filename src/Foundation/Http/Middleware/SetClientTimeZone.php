@@ -9,14 +9,15 @@ use Closure;
 
 class SetClientTimeZone {
 
-	const TIMEZONE_DEFAULT = 'UTC';
-	const COOKIE_NAME = 'workspace';
+	protected $defaultTimezone = 'UTC';
+
+	protected $cookieName = 'timezone';
 
 	public function handle(Request $request, Closure $next) {
 		try {
 			date_default_timezone_set($this->getClientTimezone());
 		} catch (\ErrorException $e) {
-			date_default_timezone_set(static::TIMEZONE_DEFAULT);
+			date_default_timezone_set($this->defaultTimezone);
 		}
 
 		$request->merge(['timezone' => date_default_timezone_get()]);
@@ -31,7 +32,7 @@ class SetClientTimeZone {
 	}
 
 	private function getClientTimezone() {
-		return Cookie::get(static::COOKIE_NAME) ?? static::TIMEZONE_DEFAULT;
+		return Cookie::get($this->cookieName) ?? $this->defaultTimezone;
 	}
 
 }
