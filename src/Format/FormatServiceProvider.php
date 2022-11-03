@@ -10,6 +10,16 @@ class FormatServiceProvider extends ServiceProvider implements DeferrableProvide
 
 	protected $formats = [];
 
+	protected $defaultRules = [
+		'string' => Rules\Text::class,
+		'number' => Rules\Number::class,
+		'boolean' => Rules\Boolean::class,
+		'date' => Rules\Date::class,
+		'filesize' => Rules\FileSize::class
+	];
+
+	protected $rules = [];
+
 	public function register() {
 		$this->registerFormatFactory();
 	}
@@ -21,6 +31,7 @@ class FormatServiceProvider extends ServiceProvider implements DeferrableProvide
 			//set configs
 			$this->registerFormats($factory);
 			$this->registerDefaultRules($factory);
+			$this->registerRules($factory);
 			$this->registerAliases($factory);
 
 			return $factory;
@@ -32,11 +43,15 @@ class FormatServiceProvider extends ServiceProvider implements DeferrableProvide
 	}
 
 	protected function registerDefaultRules($factory) {
-		$factory->extend('string', Rules\Text::class);
-		$factory->extend('number', Rules\Number::class);
-		$factory->extend('boolean', Rules\Boolean::class);
-		$factory->extend('date', Rules\Date::class);
-		$factory->extend('filesize', Rules\FileSize::class);
+		foreach ($this->defaultRules as $k => $v) {
+			$factory->extend($k, $v);
+		}
+	}
+
+	protected function registerRules($factory) {
+		foreach ($this->rules as $k => $v) {
+			$factory->extend($k, $v);
+		}
 	}
 
 	protected function registerAliases($factory) {
