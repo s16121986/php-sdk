@@ -46,7 +46,7 @@ class Number implements Rule {
 			return null;
 	}
 
-	public function format($value, string $format = null): string {
+	public function format($value, $format = null): string {
 		$format = $this->parseFormat($format ?? 'number');
 		$number = $this->prepareValue($value);
 
