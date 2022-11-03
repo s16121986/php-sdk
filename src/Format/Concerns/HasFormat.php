@@ -21,10 +21,8 @@ trait HasFormat {
 
 				if (isset($format[$flag]))
 					$format[$flag] = $value;
-			} else {
-				if (isset($flagKeys[$i]))
-					$format[$flagKeys[$i]] = $part;
-			}
+			} else if (isset($flagKeys[$part]))
+				$format[$flagKeys[$part]] = true;
 		}
 
 		return $format;

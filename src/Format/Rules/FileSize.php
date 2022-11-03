@@ -16,7 +16,7 @@ class FileSize implements Rule {
 	const FZ = 'FZ';
 
 	protected $format = [
-		'FU' => '',
+		'FU' => 'byte,Kb,Mb,Gb,Tb,Pb,Eb,Zb,Yb',
 		'FFD' => 1,
 		'FDS' => ',',
 		'FGS' => ' ',
@@ -53,7 +53,7 @@ class FileSize implements Rule {
 		if (!$format[static::FU])
 			return app('format')->number($size, $numberFormat);
 
-		$units = explode(',', $format[static::FU]);
+		$units = explode(',', (string)$format[static::FU]);
 		$i = floor(log($size, 1024));
 		while (!isset($units[$i])) {
 			$i--;
