@@ -154,7 +154,7 @@ class ParamsTable {
 		if ($href)
 			return '<a href="' . $href . '"'
 				. (isset($param->target) ? ' target="' . $param->target . '"' : '')
-				. '>' . $text . '</a>';
+				. '>' . ($param->text ?? $text) . '</a>';
 
 		return $text;
 	}
