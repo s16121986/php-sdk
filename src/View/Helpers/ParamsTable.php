@@ -1,6 +1,6 @@
 <?php
 
-namespace Gsdk\View;
+namespace Gsdk\View\Helpers;
 
 class ParamsTable {
 
@@ -83,6 +83,11 @@ class ParamsTable {
 
 	public function value($name, $value): static {
 		$this->values[$name] = $value;
+		return $this;
+	}
+
+	public function values(array $values): static {
+		$this->values = array_merge($this->values, $values);
 		return $this;
 	}
 
