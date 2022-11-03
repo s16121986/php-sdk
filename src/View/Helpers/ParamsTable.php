@@ -2,11 +2,9 @@
 
 namespace Gsdk\View\Helpers;
 
-class ParamsTable {
+use Gsdk\Format\Number;
 
-	protected static $defaults = [
-		'dateFormat' => 'Y-m-d H:i'
-	];
+class ParamsTable {
 
 	protected $view;
 
@@ -18,10 +16,6 @@ class ParamsTable {
 
 	private $values = [];
 
-	public static function setDefaults(array $defaults) {
-		static::$defaults = array_merge(static::$defaults, $defaults);
-	}
-
 	public function __construct($data = null) {
 		$this->data($data);
 	}
@@ -30,7 +24,14 @@ class ParamsTable {
 		return $this->values[$name] ?? $this->data->$name ?? null;
 	}
 
-	public function add(string $name, string $label, $type = 'text', array $options = []): static {
+	public function __call(string $name, array $arguments) {
+		if (count($arguments) < 2)
+			throw new \Exception('Arguments number required');
+
+		return $this->param($arguments[0], $arguments[1], $name, $arguments[2] ?? []);
+	}
+
+	public function param(string $name, string $label, $type = 'text', array $options = []): static {
 		$options['name'] = $name;
 		$options['label'] = $label;
 		$options['type'] = $type;
@@ -38,34 +39,14 @@ class ParamsTable {
 		return $this;
 	}
 
-	public function text(string $name, string $label, array $options = []): static {
-		return $this->add($name, $label, 'text', $options);
-	}
-
-	public function email(string $name, string $label, array $options = []): static {
-		return $this->add($name, $label, 'email', $options);
-	}
-
-	public function phone(string $name, string $label, array $options = []): static {
-		return $this->add($name, $label, 'phone', $options);
-	}
-
 	public function custom(string $name, string $label, callable $formatFunction, array $options = []): static {
 		$options['format'] = $formatFunction;
-		return $this->add($name, $label, 'custom', $options);
+		return $this->param($name, $label, 'custom', $options);
 	}
 
 	public function enum(string $name, string $label, string $enum, array $options = []): static {
 		$options['enum'] = $enum;
-		return $this->add($name, $label, 'enum', $options);
-	}
-
-	public function date(string $name, string $label, array $options = []): static {
-		return $this->add($name, $label, 'date', $options);
-	}
-
-	public function number(string $name, string $label, array $options = []): static {
-		return $this->add($name, $label, 'number', $options);
+		return $this->param($name, $label, 'enum', $options);
 	}
 
 	public function data($data): static {
@@ -134,19 +115,18 @@ class ParamsTable {
 	}
 
 	protected function prepareValue($value, $param) {
-		if (!empty($param->format) && !is_string($param->format) && is_callable($param->format))
+		$format = $param->format ?? null;
+		if (!empty($format) && !is_string($param->format) && is_callable($param->format))
 			return call_user_func($param->format, $value);
 
-		return match ($param->type) {
-			'enum' => call_user_func([$param->enum, 'getLabel'], $value),
-			'date' => $this->formatDate($value, $param),
-			default => $value,
+		$rule = $param->type;
+		switch ($rule) {
+			case 'enum':
+				return call_user_func([$param->enum, 'getLabel'], $value);
 		};
-	}
 
-	protected function formatDate($value, $param) {
-		if ($value instanceof \DateTime)
-			return $value->format($param->format ?? static::$defaults['dateFormat']);
+		if (app('format')->hasExtension($rule))
+			return app('format')->$rule($value, $format ?? $rule);
 
 		return $value;
 	}
