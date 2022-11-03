@@ -19,7 +19,7 @@ class Boolean implements Rule {
 		'BT' => 'False',
 	];
 
-	protected function fromString(Text $value): bool {
+	protected function fromString(string $value): bool {
 		return match (strtolower($value)) {
 			'', 'false', 'no', 'n' => false,
 			default => true,

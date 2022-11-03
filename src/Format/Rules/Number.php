@@ -31,7 +31,7 @@ class Number implements Rule {
 		'NLZ' => false
 	];
 
-	public function fromString(Text $number): float {
+	public function fromString(string $number): float {
 		return (float)str_replace([' ', ','], ['', '.'], $number);
 	}
 
@@ -46,7 +46,7 @@ class Number implements Rule {
 			return null;
 	}
 
-	public function format($value, Text $format = null): string {
+	public function format($value, string $format = null): string {
 		$format = $this->parseFormat($format ?? 'number');
 		$number = $this->prepareValue($value);
 
