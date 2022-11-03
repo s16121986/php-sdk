@@ -55,9 +55,9 @@ class Number implements Rule {
 
 		$string = number_format(
 			$number,
-			$format[static::NFD],
-			$format[static::NDS],
-			$format[static::NGS]
+			(int)$format[static::NFD],
+			(string)$format[static::NDS],
+			(string)$format[static::NGS]
 		);
 
 		if ($format[static::NLZ])

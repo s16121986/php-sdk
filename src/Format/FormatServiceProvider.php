@@ -8,14 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class FormatServiceProvider extends ServiceProvider implements DeferrableProvider {
 
-	protected $formats = [
-		//const PRICE_FORMAT = 'NFD=2;NDS=,;NGS= ;';
-		//const NUMBER_FORMAT = 'ND=7;NGS=;NLZ=1';
-		//const DATE_FORMAT = 'date';
-		//const TIME_FORMAT = 'time';
-		//const DATETIME_FORMAT = 'datetime';
-		//'filesize' => ''
-	];
+	protected $formats = [];
 
 	public function register() {
 		$this->registerFormatFactory();
@@ -28,6 +21,7 @@ class FormatServiceProvider extends ServiceProvider implements DeferrableProvide
 			//set configs
 			$this->registerFormats($factory);
 			$this->registerDefaultRules($factory);
+			$this->registerAliases($factory);
 
 			return $factory;
 		});

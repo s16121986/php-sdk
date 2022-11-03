@@ -58,6 +58,9 @@ class Factory {
 		if (isset($this->aliases[$name]))
 			$name = $this->aliases[$name];
 
+		if (!isset($this->extensions[$name]))
+			throw new \Exception('Format extension [' . $name . '] undefined');
+
 		$extension = $this->extensions[$name];
 		if ($extension instanceof Rule)
 			return $extension;
