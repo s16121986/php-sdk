@@ -38,7 +38,7 @@ class FileSize implements Rule {
 			return null;
 	}
 
-	public function format($value, Text $format = null): Text {
+	public function format($value, Text $format = null): string {
 		$format = $this->parseFormat($format ?? 'filesize');
 		$size = $this->prepareValue($value);
 

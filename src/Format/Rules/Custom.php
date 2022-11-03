@@ -12,7 +12,7 @@ class Custom implements Rule {
 		$this->handler = $handler;
 	}
 
-	public function format($value, $format = null): Text {
+	public function format($value, $format = null): string {
 		return call_user_func($this->handler, $value, $format);
 	}
 

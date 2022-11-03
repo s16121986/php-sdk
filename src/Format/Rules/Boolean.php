@@ -33,7 +33,7 @@ class Boolean implements Rule {
 			return (bool)$value;
 	}
 
-	public function format($value, $format = null): Text {
+	public function format($value, $format = null): string {
 		$bool = $this->prepareValue($value);
 		$format = $this->parseFormat($format ?? 'boolean');
 

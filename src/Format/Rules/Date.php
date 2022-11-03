@@ -13,7 +13,7 @@ class Date implements Rule {
 			return new \DateTime($value);
 	}
 
-	public function format($value, $format = null): Text {
+	public function format($value, $format = null): string {
 		$date = $this->dateFactory($value);
 		$format = app('format')->getFormat($format ?? 'date');
 
