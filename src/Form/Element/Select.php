@@ -156,7 +156,7 @@ class Select extends Xhtml {
 			return true;
 
 		if ($this->multiple)
-			return is_iterable($value) && !empty($value);
+			return is_iterable($value) || empty($value);
 		else
 			return ($this->allowNotExists || $this->valueExists($value));
 	}
