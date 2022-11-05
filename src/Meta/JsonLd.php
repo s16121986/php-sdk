@@ -10,23 +10,25 @@ class JsonLd {
 		return $this->items[$name] ?? null;
 	}
 
-	public function addThing($type, $data = null) {
-		$cls = __NAMESPACE__ . '\JsonLd\\' . $type;
-		$item = new $cls($data);
-		$this->items[strtolower($type)] = $item;
-		return $item;
+	public function addThing($thing) {
+		$this->items[strtolower($thing->type)] = $thing;
+		return $thing;
+	}
+
+	public function addCustom($type, $data) {
+		return $this->addThing(new JsonLd\Custom($type, $data));
 	}
 
 	public function addOrganization($data = null) {
-		return $this->addThing('Organization', $data);
+		return $this->addThing(new JsonLd\Organization($data));
 	}
 
 	public function addArticle($data = null) {
-		return $this->addThing('Article', $data);
+		return $this->addThing(new JsonLd\Article($data));
 	}
 
 	public function addBreadcrumbs($data = null) {
-		return $this->addThing('BreadcrumbList', $data);
+		return $this->addThing(new JsonLd\BreadcrumbList($data));
 	}
 
 	public function getHtml(): string {

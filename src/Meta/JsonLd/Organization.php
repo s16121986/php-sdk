@@ -1,15 +1,16 @@
 <?php
+
 namespace Gsdk\Meta\JsonLd;
 
-class Organization extends AbstractThing{
-	
-	protected function init() {
-		//$this->data['sameAs'] = [];
+class Organization extends AbstractThing {
+
+	public function __construct($data = null) {
+		parent::__construct('Organization', $data);
 	}
-	
+
 	public function addSocialUrl($url) {
 		$this->data['sameAs'][] = $url;
 		return $this;
 	}
-	
+
 }

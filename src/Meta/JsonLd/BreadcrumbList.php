@@ -6,7 +6,8 @@ class BreadcrumbList extends AbstractThing {
 
 	private $items = [];
 
-	protected function init() {
+	public function __construct($data = null) {
+		parent::__construct('BreadcrumbList', $data);
 	}
 
 	public function addItem($name, $item) {

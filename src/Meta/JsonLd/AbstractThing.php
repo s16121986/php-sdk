@@ -7,11 +7,11 @@ abstract class AbstractThing {
 	const SCHEME = 'https://schema.org';
 
 	protected $type;
+
 	protected $data = [];
 
-	public function __construct($data = null) {
-		$this->type = str_replace(__NAMESPACE__ . '\\', '', get_class($this));
-		$this->init();
+	public function __construct($type, $data) {
+		$this->type = $type;
 
 		if (is_array($data))
 			foreach ($data as $k => $v) {
@@ -46,7 +46,5 @@ abstract class AbstractThing {
 
 		return json_encode($data);
 	}
-
-	abstract protected function init();
 
 }

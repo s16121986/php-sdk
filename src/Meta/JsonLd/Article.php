@@ -4,8 +4,8 @@ namespace Gsdk\Meta\JsonLd;
 
 class Article extends AbstractThing {
 
-	protected function init() {
-		//$this->data['sameAs'] = [];
+	public function __construct($data = null) {
+		parent::__construct('Article', $data);
 	}
 
 	public function entry($url, $type = 'WebPage'): static {
