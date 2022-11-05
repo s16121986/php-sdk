@@ -185,22 +185,18 @@ class Select extends Xhtml {
 			return $this->emptyValue;
 
 		if ($this->multiple) {
+			if (!is_iterable($value))
+				return [];
+
 			$valueTemp = $value;
 			$value = [];
-			if (is_iterable($valueTemp)) {
-				foreach ($valueTemp as $val) {
-					if (is_object($val))
-						$val = $val->id;
+			foreach ($valueTemp as $val) {
+				if (is_object($val))
+					$val = $val->id;
 
-					if ($this->allowNotExists || $this->valueExists($val)) {
-						$value[] = self::getValueId($val);
-					}
-				}
+				if ($this->allowNotExists || $this->valueExists($val))
+					$value[] = self::getValueId($val);
 			}
-
-			if (empty($value))
-				return null;
-
 		} else
 			$value = self::getValueId($value);
 
