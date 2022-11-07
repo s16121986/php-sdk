@@ -1,6 +1,6 @@
 <?php
 
-namespace Gsdk\Http\LastModified;
+namespace Gsdk\Foundation\Http;
 
 use Illuminate\Support\ServiceProvider;
 

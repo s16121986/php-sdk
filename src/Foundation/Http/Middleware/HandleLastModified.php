@@ -1,6 +1,6 @@
 <?php
 
-namespace Gsdk\Http\LastModified\Middleware;
+namespace Gsdk\Foundation\Http\Middleware;
 
 use Gsdk\Support\Facades\LastModified;
 use Illuminate\Support\Carbon;
