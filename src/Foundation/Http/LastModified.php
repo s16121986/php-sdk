@@ -1,6 +1,6 @@
 <?php
 
-namespace Gsdk\Http;
+namespace Gsdk\Foundation\Http;
 
 class LastModified {
 
