@@ -26,7 +26,7 @@ class HandleLastModified {
 			return $response;
 
 		$modifiedSince = Carbon::createFromTimeString($requestDateTimeString, 'GMT');
-		if ($lastModifiedAt->getTimestamp() < $modifiedSince->getTimestamp())
+		if ($lastModifiedAt->getTimestamp() <= $modifiedSince->getTimestamp())
 			abort(304);
 
 		return $response;
