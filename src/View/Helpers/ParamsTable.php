@@ -136,7 +136,7 @@ class ParamsTable {
 	}
 
 	protected function prepareText($value, $param): ?string {
-		if (empty($value))
+		if (null === $value || '' === $value)
 			return $this->prepareEmpty($param);
 
 		$href = $this->getValueHref($value, $param);
