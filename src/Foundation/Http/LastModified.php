@@ -10,8 +10,9 @@ class LastModified {
 		if (is_string($updatedAt))
 			$updatedAt = new \DateTime($updatedAt);
 		else if (is_int($updatedAt)) {
+			$timestamp = $updatedAt;
 			$updatedAt = new \DateTime();
-			$updatedAt->setTimestamp($updatedAt);
+			$updatedAt->setTimestamp($timestamp);
 		} else if (!$updatedAt instanceof \DateTime)
 			throw new \Exception('DateTime format required');
 
