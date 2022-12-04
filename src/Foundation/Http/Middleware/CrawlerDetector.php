@@ -22,7 +22,7 @@ class CrawlerDetector {
 	public function handle(Request $request, Closure $next) {
 		$userAgent = $request->header('User-Agent');
 
-		$request->merge(['isCrawlerDetected' => $this->detectBot($userAgent)]);
+		$request->attributes->add(['isCrawlerDetected' => $this->detectBot($userAgent)]);
 
 		return $next($request);
 	}

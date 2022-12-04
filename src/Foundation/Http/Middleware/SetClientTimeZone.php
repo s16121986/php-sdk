@@ -20,7 +20,7 @@ class SetClientTimeZone {
 			date_default_timezone_set($this->defaultTimezone);
 		}
 
-		$request->merge(['timezone' => date_default_timezone_get()]);
+		$request->attributes->add(['timezone' => date_default_timezone_get()]);
 
 		$this->bootTimezone();
 
