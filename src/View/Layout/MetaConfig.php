@@ -33,7 +33,7 @@ trait MetaConfig {
 			->addMetaHttpEquiv('Content-Type', 'text/html; charset=utf-8')
 			->addMetaHttpEquiv('X-UA-Compatible', 'IE=edge,chrome=1')
 			->addMetaHttpEquiv('Content-language', App::currentLocale())
-			->addMetaName('viewport', 'width=device-width, initial-scale=1,minimum-scale=1,maximum-scale=1')
+			->addMetaName('viewport', 'width=device-width, initial-scale=1')
 			->addMetaName('csrf-token', csrf_token());
 	}
 
