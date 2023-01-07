@@ -2,7 +2,7 @@
 
 namespace Gsdk\Grid\Column;
 
-use Gsdk\Format;
+use Gsdk\FormatDeprecated as Format;
 
 class Number extends AbstractColumn {
 

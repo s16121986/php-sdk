@@ -2,8 +2,6 @@
 
 namespace Gsdk\View\Helpers;
 
-use Gsdk\Format\Number;
-
 class ParamsTable {
 
 	protected $view;

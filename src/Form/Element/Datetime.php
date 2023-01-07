@@ -2,7 +2,7 @@
 
 namespace Gsdk\Form\Element;
 
-use Gsdk\Stdlib\Format;
+use Gsdk\FormatDeprecated as Format;
 
 class Datetime extends Text {
 

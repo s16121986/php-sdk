@@ -21,7 +21,6 @@
   },
   "autoload": {
 	"files": [
-	  "functions/functions.php",
 	  "functions/date.php"
 	],
 	"psr-4": {

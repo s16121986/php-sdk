@@ -1,8 +1,8 @@
 <?php
 
-namespace Gsdk\Format;
+namespace Gsdk\FormatDeprecated;
 
-use Gsdk\Format;
+use Gsdk\FormatDeprecated as Format;
 
 class Params {
 
