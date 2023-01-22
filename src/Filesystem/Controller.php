@@ -133,5 +133,19 @@ class Controller extends BaseController
 		return md5($this->storage->lastModified($filename) . '?' . $query);
 	}
 
+	protected function isImageFilename($filename): bool
+	{
+		$ext = substr($filename, strrpos($filename, '.'));
+
+		return in_array(strtolower($ext), [
+			'.jpg',
+			'.jpeg',
+			'.svg',
+			'.png',
+			'.gif',
+			'.tiff',
+		]);
+	}
+
 
 }
