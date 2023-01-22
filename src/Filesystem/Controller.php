@@ -68,11 +68,9 @@ class Controller extends BaseController
 	 * @param Request $request
 	 * @param string $filename
 	 */
-	protected function sendMissingFileResponse(Request $request, ?File $file)
+	protected function sendMissingFileResponse(Request $request)
 	{
-		$message = 'File ' . ($file ? $file->name : '') . ' was not found.';
-
-		throw new NotFoundHttpException($message);
+		throw new NotFoundHttpException('File was not found.');
 	}
 
 	protected function renderNotFoundImage($destination)
